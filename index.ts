@@ -1,8 +1,8 @@
 import Discord, { Client, Intents } from 'discord.js'
 import WOKCommands from 'wokcommands'
 import path from 'path'
-import dotenv from 'dotenv'
-dotenv.config()
+import testSchema from './test-schema'
+import 'dotenv/config'
 
 
 const client = new Discord.Client({
@@ -12,13 +12,15 @@ const client = new Discord.Client({
     ]
 })
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log(`Logged in as ${client.user?.tag}!`)
 
     new WOKCommands(client, {
         commandDir: path.join(__dirname, 'commands'),
         typeScript: true,
-        testServers: ['968171159776559174']
+        testServers: ['968171159776559174'],
+        botOwners: ['691572882148425809'],
+        mongoUri: process.env.MONGO__URI
     })
 })
 

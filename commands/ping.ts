@@ -4,7 +4,7 @@ export default {
     category: 'Testing',
     description: 'Replies with 🏓 *Pong!*',
     slash: "both",
-    textOnly: true,
+    testOnly: true,
 
     callback: ({ message:msg, interaction:inter }) => {
         return '🏓 *Pong!*'

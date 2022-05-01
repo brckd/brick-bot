@@ -39,7 +39,6 @@ export default {
         let reply: Message | undefined
         let collector
 
-        const filter = (i: Interaction) => i.user.id === user.id
         const time = 1000 * 60 * 5
 
         if (message) {
@@ -47,7 +46,7 @@ export default {
                 embeds: [embeds[pages[id]]],
                 components: [getRow(id)]
             })
-            collector = reply.createMessageComponentCollector({ filter, time }) 
+            collector = reply.createMessageComponentCollector({ time }) 
         }
         else {
             await interaction.reply({
@@ -55,16 +54,25 @@ export default {
                 components: [getRow(id)],
                 ephemeral: true
             })
-            collector = channel.createMessageComponentCollector({ filter, time }) 
+            collector = channel.createMessageComponentCollector({ time }) 
         }
 
         collector.on('collect', (i) => {
             if (!i) return
 
-            i.deferUpdate()
 
             if (!['prev', 'next'].includes(i.customId)) return
 
+            if(user === i.user)
+                i.deferUpdate()
+            else {
+                i.reply({
+                    content: 'This is not your paginator',
+                    ephemeral: true
+                })
+                return
+            }
+                
             if(i.customId === 'prev' && pages[id] > 0)
                 --pages[id]
             if(i.customId === 'next' && pages[id] < embeds.length -1)
@@ -79,6 +87,19 @@ export default {
                 interaction.editReply({
                     embeds: [embeds[pages[id]]],
                     components: [getRow(id)]
+                })
+        })
+
+        collector.on('end', () => {
+            if (reply)
+                reply.edit({
+                    embeds: [embeds[pages[id]]],
+                    components: []
+                })
+            else
+                interaction.editReply({
+                    embeds: [embeds[pages[id]]],
+                    components: []
                 })
         })
     }

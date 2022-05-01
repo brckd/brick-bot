@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 export default {
     category: 'Testing',
     description: 'Replies with 🏓 *Pong!*',
-    slash: "both",
+    slash: 'both',
     testOnly: true,
 
     callback: () => {

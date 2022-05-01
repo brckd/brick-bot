@@ -23,7 +23,7 @@ client.on('ready', async () => {
         typeScript: true,
         testServers: ['968171159776559174'],
         botOwners: ['691572882148425809'],
-        mongoUri: process.env.MONGO__URI
+        mongoUri: process.env.MONGO_URI
     })
 })
 

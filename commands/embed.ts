@@ -2,7 +2,7 @@ import { DiscordAPIError, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
-    category: 'testing',
+    category: 'Testing',
     description: 'Sends an embed',
     permissions: ['ADMINISTRATOR'],
 

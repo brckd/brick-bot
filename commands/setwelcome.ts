@@ -51,7 +51,7 @@ export default {
             upsert: true
         })
 
-        return `Welcome channel set to ${target} with welcome message:\n> ${text}`
+        return `Welcome channel set to ${target} with welcome message:\n> ${text?.replace(/@/g, '<member>').replace(/#&/g, '<guild>')}`
     }
 
 } as ICommand

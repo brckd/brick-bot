@@ -9,31 +9,16 @@ export default {
 
     minArgs: 2,
     expectedArgs: '<channel> <text>',
+    expectedArgsTypes: ['CHANNEL', 'STRING'],
 
     slash: 'both',
     testOnly: true,
-
-    options: [
-        {
-            name: 'channel',
-            description: 'The target channel',
-            required: true,
-            type: Discord.Constants.ApplicationCommandOptionTypes.CHANNEL
-        },
-        {
-            name: 'text',
-            description: 'The welcome message',
-            required: true,
-            type: Discord.Constants.ApplicationCommandOptionTypes.STRING
-        }
-    ],
+    guildOnly: true,
 
     callback: async ({ guild, message, interaction, args}) => {
-        if (!guild)
-            return 'Please use this command in a server'
         const target = message ? message.mentions.channels.first() : interaction.options.getChannel('channel')
         if (!target || target.type !== 'GUILD_TEXT')
-            return 'Please select a text channel'
+            return 'Please tag a text channel'
         
         let text = interaction?.options.getString(('text'))
         if (message) {
@@ -42,9 +27,9 @@ export default {
         }
 
         await welcomeSchema.findOneAndUpdate({
-            _id: guild.id
+            _id: guild?.id
         }, {
-            _id: guild.id,
+            _id: guild?.id,
             text,
             channelId: target.id
         }, {

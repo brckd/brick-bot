@@ -23,7 +23,8 @@ export default (client: Client) => {
         }
 
         data[0].send({
-            content: data[1].replace(/@/g, member.toString()).replace(/#&/g, guild.toString())
+            content: data[1].replace(/@/g, member.toString()).replace(/#&/g, guild.toString()),
+            allowedMentions: {users: []}
         })
     })
 }

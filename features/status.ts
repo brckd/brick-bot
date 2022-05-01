@@ -1,13 +1,12 @@
 import { Client, TextChannel } from "discord.js"
 
-const statusOptions = {} as [string]
+let statusOptions = [
+    'hello',
+    'world',
+    'test'
+] as string[]
 
 export default (client: Client) => {
-    let statusOptions = [
-        'hello',
-        'world',
-        'test'
-    ]
     let counter = 0;
 
     const updateStatus = () => {

@@ -1,7 +1,6 @@
 import Discord, { Client, Constants, Intents } from 'discord.js'
 import WOKCommands from 'wokcommands'
 import path from 'path'
-import testSchema from './test-schema'
 import 'dotenv/config'
 
 

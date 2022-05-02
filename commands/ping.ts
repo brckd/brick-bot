@@ -7,11 +7,18 @@ export class Ping extends Command {
             ...options,
             name:'ping',
             aliases: ['pong'],
-            description: 'Replies with the bot latency'
+            description: 'Replies with the bot latency',
+            preconditions: ['OwnerOnly']
         })
     }
 
     public async messageRun(message: Message) {
         await message.channel.send(`🏓 *Pong!*\nBot Latency: **${Math.round(this.container.client.ws.ping)}**ms`)
       }
+}
+
+declare module '@sapphire/framework' {
+	interface Preconditions {
+		OwnerOnly: never;
+	}
 }

@@ -7,7 +7,8 @@ const client = new SapphireClient({
         'GUILDS',
         'GUILD_MESSAGES'
     ],
-    defaultPrefix: '!'
+    defaultPrefix: '!',
+    allowedMentions: {users: []}
 })
 
 client.login(process.env.TOKEN)

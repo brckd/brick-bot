@@ -1,14 +1,14 @@
-import { SapphireClient } from '@sapphire/framework'
+import Discord, { StringMappedInteractionTypes } from 'discord.js'
 import 'dotenv/config'
+import { Client } from './framework'
 
-
-const client = new SapphireClient({
+const client = new Client({
     intents: [
         'GUILDS',
         'GUILD_MESSAGES'
     ],
-    defaultPrefix: '!',
-    allowedMentions: {users: []}
+    prefix: '!',
+    owners: ['691572882148425809'],
 })
 
 client.login(process.env.TOKEN)

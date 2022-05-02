@@ -13,7 +13,7 @@ export class Ping extends Command {
     }
 
     public async messageRun(message: Message) {
-        await message.channel.send(`🏓 *Pong!*\nBot Latency: **${Math.round(this.container.client.ws.ping)}**ms`)
+        await message.reply(`🏓 *Pong!*\nBot Latency: **${Math.round(this.container.client.ws.ping)}**ms`)
       }
 }
 

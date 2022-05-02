@@ -1,4 +1,5 @@
 import Discord, { Channel, GuildMember, MessageAttachment, Role } from 'discord.js'
+import eventHandler from './events'
 
 export interface IEvent {
     run: {
@@ -27,5 +28,8 @@ export class Client extends Discord.Client {
         super(options)
         this.prefix = options.prefix || '!'
         this.owners = options.owners || []
+        this.events = new Discord.Collection()
+        this.loadEvents = (reload: boolean) => eventHandler(this, reload)
+        this.loadEvents(false)
     }
 }

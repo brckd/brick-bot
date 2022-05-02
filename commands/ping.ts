@@ -7,7 +7,7 @@ export class Ping extends Command {
             ...options,
             name:'ping',
             aliases: ['pong'],
-            description: ''
+            description: 'Replies with the bot latency'
         })
     }
 

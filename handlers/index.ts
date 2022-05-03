@@ -1,6 +1,7 @@
-import Discord, { Message } from 'discord.js'
+import Discord, { ApplicationCommandData, CommandInteraction, Message } from 'discord.js'
 import eventHandler from './events'
 import commandHandler from './commands'
+import slashCommandHandler from './slashcommands'
 
 export interface IEvent {
     run: {
@@ -17,17 +18,25 @@ export interface ICommand {
     category?: string
     permissions?: Discord.PermissionResolvable | []
     devOnly?: boolean
+}
 
+export type ISlashCommand = ApplicationCommandData & {
+    run: {
+    (context: {client: Client, interaction: CommandInteraction}, ...args: any[]): void
+    }
+    permissions?: Discord.PermissionResolvable | []
 }
 
 interface ClientOptions extends Discord.ClientOptions {
     prefix?: string
     owners?: string[]
+    testGuilds?: string[]
 }
 
 export interface Client extends Discord.Client {
-    prefix: string,
+    prefix: string
     owners: string[]
+    testGuilds?: string[]
 
     events: Discord.Collection<string, IEvent>
     eventsDir: string
@@ -36,6 +45,10 @@ export interface Client extends Discord.Client {
     commands: Discord.Collection<string, ICommand>
     commandsDir: string
     loadCommands: (reload: boolean) => void
+
+    slashcommands: Discord.Collection<string, ISlashCommand>
+    slashcommandDir: string
+    loadSlashCommands: (reload: boolean) => void
 }
 
 export class Client extends Discord.Client {
@@ -43,6 +56,7 @@ export class Client extends Discord.Client {
         super(options)
         this.prefix = options.prefix || '!'
         this.owners = options.owners || []
+        this.testGuilds = options.testGuilds
 
         this.events = new Discord.Collection()
         this.loadEvents = (reload: boolean) => eventHandler(this, reload)
@@ -51,5 +65,9 @@ export class Client extends Discord.Client {
         this.commands = new Discord.Collection()
         this.loadCommands = (reload: boolean) => commandHandler(this, reload)
         this.loadCommands(false)
+        
+        this.slashcommands = new Discord.Collection()
+        this.loadSlashCommands = (reload: boolean) => slashCommandHandler(this, reload)
+        this.loadSlashCommands(false)
     }
 }

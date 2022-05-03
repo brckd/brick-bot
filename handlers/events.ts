@@ -19,7 +19,7 @@ export default (client: Client, reload: boolean) => {
             })
     })
 
-    console.log(`Loaded ${events.length} event${events.length===1?'':'s'}`)
+    console.log(`Loaded ${client.events.size} event${client.events.size===1?'':'s'}`)
 }
 
 function triggerEventHandler(

@@ -1,4 +1,3 @@
-import Discord, { StringMappedInteractionTypes } from 'discord.js'
 import 'dotenv/config'
 import { Client } from './handlers'
 

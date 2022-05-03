@@ -1,4 +1,4 @@
-import { Client } from ".";
+import { Client, IEvent } from ".";
 import { getFiles } from "./functions";
 
 export default (client: Client, reload: boolean) => {
@@ -9,7 +9,7 @@ export default (client: Client, reload: boolean) => {
         if (reload)
             delete require.cache[require.resolve(`../events/${f}`)]
 
-        const event = require(`../events/${f}`).default
+        const event = require(`../events/${f}`).default as IEvent
         const name = event.name || f.slice(0, f.length-ending.length)
         client.events.set(name, event)
 

@@ -27,6 +27,7 @@ export type SlashCommandTemplate = Partial<ApplicationCommandData> & {
     permissions?: Discord.PermissionResolvable | []
     name?: string
     options?: ApplicationCommandOptionData[]
+    guildOnly?: boolean
 }
 
 export type SlashCommand = ApplicationCommandData & {
@@ -36,6 +37,7 @@ export type SlashCommand = ApplicationCommandData & {
     permissions?: Discord.PermissionResolvable | []
     name?: string
     options?: ApplicationCommandOptionData[]
+    guildOnly?: boolean
 }
 
 interface ClientOptions extends Discord.ClientOptions {

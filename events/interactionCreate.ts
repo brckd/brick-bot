@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionType, Interaction, Permissions } from "discord.js";
-import { EventTemplate, SlashCommand } from "../handlers";
+import { Interaction, Permissions } from "discord.js";
+import { EventTemplate } from "../handlers";
 
 export default {
     run: (client, interaction: Interaction) => {
@@ -15,6 +15,12 @@ export default {
                 content: `Missing permissions to run this command:\n>>> ${missing.join('\n')}`,
                 ephemeral: true
             })
+
+        if (slash.guildOnly && !interaction.guild)
+            return interaction.reply({
+                content: 'Command can only be run in a guild',
+                ephemeral: true
+            })
         
         const options = interaction.options
         const args = slash.options?.map((option, i) => {
@@ -25,7 +31,7 @@ export default {
                 case 'MENTIONABLE': return options.getMentionable(option.name)
                 case 'NUMBER': return options.getNumber(option.name)
                 case 'STRING': return options.getString(option.name)
-                case 'USER': return options.getMember(option.name) || options.getUser(option.name)
+                case 'USER': return slash.guildOnly ? options.getMember(option.name) : options.getUser(option.name)
             }
         }) || []
 

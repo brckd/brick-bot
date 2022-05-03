@@ -9,6 +9,7 @@ const client = new Client({
     ],
     prefix: '!',
     owners: ['691572882148425809'],
+    allowedMentions: {users: [], roles: [], repliedUser: false}
 })
 
 client.login(process.env.TOKEN)

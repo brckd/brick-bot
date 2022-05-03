@@ -7,9 +7,11 @@ const client = new Client({
         'GUILDS',
         'GUILD_MESSAGES'
     ],
+    allowedMentions: {users: [], roles: [], repliedUser: false},
+    
     prefix: '!',
     owners: ['691572882148425809'],
-    allowedMentions: {users: [], roles: [], repliedUser: false}
+    testGuilds: ['968171159776559174']
 })
 
 client.login(process.env.TOKEN)

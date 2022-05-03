@@ -1,5 +1,5 @@
 import { Message, Permissions } from "discord.js"
-import { IEvent } from "../handlers"
+import { EventTemplate } from "../handlers"
 
 export default {
     run: async (client, message: Message) => {
@@ -32,4 +32,4 @@ export default {
                 console.error(err)
         }
     }
-} as IEvent
+} as EventTemplate

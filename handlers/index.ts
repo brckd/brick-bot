@@ -3,14 +3,14 @@ import eventHandler from './events'
 import commandHandler from './commands'
 import slashCommandHandler from './slashcommands'
 
-export interface IEvent {
+export interface EventTemplate {
     run: {
         (client: Client, ...args: any[]): void
     },
     name?: string
 }
 
-export interface ICommand {
+export interface CommandTemplate {
     run: {
         (context: {client: Client, message: Message}, ...args: any[]): void
     },
@@ -20,12 +20,22 @@ export interface ICommand {
     devOnly?: boolean
 }
 
-export type ISlashCommand = ApplicationCommandData & {
+export type SlashCommandTemplate = Partial<ApplicationCommandData> & {
     run: {
     (context: {client: Client, interaction: CommandInteraction}, ...args: any[]): void
     }
     permissions?: Discord.PermissionResolvable | []
+    name?: string
 }
+
+export type SlashCommand = ApplicationCommandData & {
+    run: {
+    (context: {client: Client, interaction: CommandInteraction}, ...args: any[]): void
+    }
+    permissions?: Discord.PermissionResolvable | []
+    name?: string
+}
+
 
 interface ClientOptions extends Discord.ClientOptions {
     prefix?: string
@@ -38,15 +48,15 @@ export interface Client extends Discord.Client {
     owners: string[]
     testGuilds?: string[]
 
-    events: Discord.Collection<string, IEvent>
+    events: Discord.Collection<string, EventTemplate>
     eventsDir: string
     loadEvents: (reload: boolean) => void
 
-    commands: Discord.Collection<string, ICommand>
+    commands: Discord.Collection<string, CommandTemplate>
     commandsDir: string
     loadCommands: (reload: boolean) => void
 
-    slashcommands: Discord.Collection<string, ISlashCommand>
+    slashcommands: Discord.Collection<string, SlashCommand>
     slashcommandDir: string
     loadSlashCommands: (reload: boolean) => void
 }

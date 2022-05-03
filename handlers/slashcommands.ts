@@ -1,5 +1,5 @@
 import { getFiles } from './functions'
-import { Client, ISlashCommand } from '.'
+import { Client, SlashCommand } from '.'
 
 export default (client: Client, reload: boolean) => {
     const ending = '.ts'
@@ -8,7 +8,7 @@ export default (client: Client, reload: boolean) => {
         if (reload)
             delete require.cache[require.resolve(`../slashcommands/${f}`)]
 
-        const slash = require(`../slashcommands/${f}`).default
+        const slash = require(`../slashcommands/${f}`).default as SlashCommand
         slash.name = slash.name || f.slice(0, f.length-ending.length)
         
         client.slashcommands.set(slash.name, slash)

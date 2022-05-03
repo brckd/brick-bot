@@ -1,5 +1,5 @@
 import { Interaction, Permissions } from "discord.js";
-import { IEvent } from "../handlers";
+import { EventTemplate } from "../handlers";
 
 export default {
     run: (client, interaction: Interaction) => {
@@ -29,4 +29,4 @@ export default {
                 console.error(err)
         }
     }
-} as IEvent
+} as EventTemplate

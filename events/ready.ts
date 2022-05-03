@@ -1,4 +1,4 @@
-import { IEvent } from "../handlers"
+import { EventTemplate } from "../handlers"
 
 export default {
     run: async (client) => {
@@ -12,4 +12,4 @@ export default {
 
         console.log(`Logged in as ${client.user?.tag}`)
     }
-} as IEvent
+} as EventTemplate

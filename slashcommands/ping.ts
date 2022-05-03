@@ -1,4 +1,4 @@
-import { ISlashCommand } from "../handlers";
+import { SlashCommandTemplate } from "../handlers";
 
 export default {
     name: 'ping',
@@ -9,4 +9,4 @@ export default {
             ephemeral: true
         })
     }
-} as ISlashCommand
+} as SlashCommandTemplate

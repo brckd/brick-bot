@@ -13,9 +13,11 @@ export default (client: Client, reload: boolean) => {
                 delete require.cache[require.resolve(`commands/${category}/${f}`)]
 
             const command = require(`../commands/${category}/${f}`).default as CommandTemplate
+            if (!command)
+                return console.error(`Command at ${f} is undefined`)
+
             command.name = command.name || f.slice(0, f.length-ending.length)
             command.category = command.category || category
-
             client.commands.set(command.name, command)
         })
     })

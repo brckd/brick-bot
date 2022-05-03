@@ -10,6 +10,9 @@ export default (client: Client, reload: boolean) => {
             delete require.cache[require.resolve(`../events/${f}`)]
 
         const event = require(`../events/${f}`).default as EventTemplate
+        if (!event)
+            return console.error(``)
+
         const name = event.name || f.slice(0, f.length-ending.length)
         client.events.set(name, event)
 

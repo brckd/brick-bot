@@ -1,4 +1,4 @@
-import { GuildMember, User } from "discord.js";
+import { GuildMember } from "discord.js";
 import { SlashCommandTemplate } from "../handlers";
 
 const durations = [
@@ -11,7 +11,7 @@ const durations = [
 ]
 
 export default {
-    description: 'Timeouts a member',
+    description: 'Time out user',
     permissions: ['MODERATE_MEMBERS'],
 
     options: [

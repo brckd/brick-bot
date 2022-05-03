@@ -1,6 +1,6 @@
 import Discord, { StringMappedInteractionTypes } from 'discord.js'
 import 'dotenv/config'
-import { Client } from './framework'
+import { Client } from './handlers'
 
 const client = new Client({
     intents: [

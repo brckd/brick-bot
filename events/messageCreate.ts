@@ -1,5 +1,5 @@
 import { Message } from "discord.js"
-import { IEvent } from "../framework"
+import { IEvent } from "../handlers"
 
 export default {
     run: async (client, message: Message) => {

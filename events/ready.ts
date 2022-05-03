@@ -1,4 +1,4 @@
-import { IEvent } from "../framework"
+import { IEvent } from "../handlers"
 
 export default {
     run: async (client) => {

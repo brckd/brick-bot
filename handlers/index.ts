@@ -1,4 +1,4 @@
-import Discord, { ApplicationCommandData, CommandInteraction, Message } from 'discord.js'
+import Discord, { ApplicationCommandData, ApplicationCommandOptionData, CommandInteraction, Message } from 'discord.js'
 import eventHandler from './events'
 import commandHandler from './commands'
 import slashCommandHandler from './slashcommands'
@@ -26,6 +26,7 @@ export type SlashCommandTemplate = Partial<ApplicationCommandData> & {
     }
     permissions?: Discord.PermissionResolvable | []
     name?: string
+    options?: ApplicationCommandOptionData[]
 }
 
 export type SlashCommand = ApplicationCommandData & {
@@ -34,8 +35,8 @@ export type SlashCommand = ApplicationCommandData & {
     }
     permissions?: Discord.PermissionResolvable | []
     name?: string
+    options?: ApplicationCommandOptionData[]
 }
-
 
 interface ClientOptions extends Discord.ClientOptions {
     prefix?: string
@@ -49,15 +50,12 @@ export interface Client extends Discord.Client {
     testGuilds?: string[]
 
     events: Discord.Collection<string, EventTemplate>
-    eventsDir: string
     loadEvents: (reload: boolean) => void
 
     commands: Discord.Collection<string, CommandTemplate>
-    commandsDir: string
     loadCommands: (reload: boolean) => void
 
     slashcommands: Discord.Collection<string, SlashCommand>
-    slashcommandDir: string
     loadSlashCommands: (reload: boolean) => void
 }
 

@@ -1,6 +1,6 @@
 import { getFiles } from './functions'
 import fs from 'fs'
-import { Client } from '.'
+import { Client, ICommand } from '.'
 
 export default (client: Client, reload: boolean) => {
     const ending = '.ts'
@@ -12,7 +12,7 @@ export default (client: Client, reload: boolean) => {
             if (reload)
                 delete require.cache[require.resolve(`commands/${category}/${f}`)]
 
-            const command = require(`../commands/${category}/${f}`).default
+            const command = require(`../commands/${category}/${f}`).default as ICommand
             command.name = command.name || f.slice(0, f.length-ending.length)
             command.category = command.category || category
 

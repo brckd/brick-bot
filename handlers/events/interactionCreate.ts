@@ -1,5 +1,5 @@
 import { ButtonInteraction, CommandInteraction, Interaction, Permissions } from "discord.js";
-import { EventTemplate, Client } from "../handlers";
+import { EventTemplate, Client } from "..";
 
 export default {
     run: (client, interaction: Interaction) => {

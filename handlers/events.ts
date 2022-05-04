@@ -2,29 +2,29 @@ import { Client, EventTemplate } from ".";
 import { getFiles } from "./functions";
 import path from 'path'
 
-export default (client: Client, reload: boolean) => {
+export default (client: Client, dir?: string) => {
     const ext = '.ts'
-    let events = getFiles(client.eventsDir, ext)
+    let events = getFiles(dir || client.eventsDir, ext)
 
-    events.forEach((p, i) => {
-
-        if (reload)
-            delete require.cache[require.resolve(p)]
+    events.forEach((p) => {
+        delete require.cache[require.resolve(p)]
 
         const event = require(p).default as EventTemplate
         if (!event)
             return console.error(`Event at ${p} is undefined`)
+        
+        const filename = path.basename(p, ext)
+        event.name = event.name || filename
 
-        const name = event.name || path.basename(p, ext)
-        client.events.set(name, event)
-
-        if (!reload)
-            client.on(name, (...args) => {
-                triggerEventHandler(client, name, ...args)
+        if (!client.events.has(filename))
+            client.on(event.name, (...args) => {
+                triggerEventHandler(client, filename, ...args)
             })
-    })
 
-    console.log(`Loaded ${client.events.size} event${client.events.size===1?'':'s'}`)
+        client.events.set(filename, event)
+    })
+    
+    return events
 }
 
 function triggerEventHandler(

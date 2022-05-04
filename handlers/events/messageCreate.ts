@@ -1,5 +1,5 @@
 import { Message, Permissions } from "discord.js"
-import { EventTemplate } from "../handlers"
+import { EventTemplate } from ".."
 
 export default {
     run: async (client, message: Message) => {

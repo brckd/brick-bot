@@ -2,18 +2,21 @@ import { getFiles } from './functions'
 import { Client, ButtonTemplate } from '.'
 import path from 'path'
 
-export default (client: Client, reload: boolean) => {
+export default (client: Client) => {
     const ext = '.ts'
 
-    getFiles(client.buttonsDir, ext).forEach((p) => {
-        if (reload)
-            delete require.cache[require.resolve(p)]
+    const buttons = getFiles(client.buttonsDir, ext)
 
-        const slash = require(p).default as ButtonTemplate
-        if (!slash)
+    buttons.forEach((p) => {
+        delete require.cache[require.resolve(p)]
+
+        const button = require(p).default as ButtonTemplate
+        if (!button)
             return console.error(`Button at ${p} is undefined`)
 
-        slash.name = slash.name || path.basename(p, ext)
-        client.buttons.set(slash.name, slash)
+        button.name = button.name || path.basename(p, ext)
+        client.buttons.set(button.name, button)
     })
+
+    return buttons
 }

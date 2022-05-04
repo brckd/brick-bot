@@ -1,5 +1,12 @@
 import { CommandTemplate } from "../../handlers"
 
+const replacements = {
+    'r': 'w',
+    'l': 'w',
+    's': 'z',
+    'y': 'i'
+} as {[key: string]: string}
+
 export default {
     description: 'Fuwwyfy your text',
     slash: 'both',
@@ -14,6 +21,8 @@ export default {
     ],
 
     run: ({ reply }, ...text) => {
-        reply(text.join(' ').replace(/[rl]/g, 'w').replace('s', 'z'))
+        reply(
+            text.join(' ').split('').map(c => replacements[c] ?? c).join('')
+        )
     }
 } as CommandTemplate

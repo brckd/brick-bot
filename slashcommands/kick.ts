@@ -13,6 +13,7 @@ const durations = [
 export default {
     description: 'Kick user',
     permissions: ['KICK_MEMBERS'],
+    guildOnly: true,
 
     options: [
         {

@@ -1,4 +1,4 @@
-import { ButtonInteraction, CommandInteraction, GuildMember, Interaction, Permissions } from "discord.js";
+import { ButtonInteraction, CommandInteraction, GuildMember, Interaction, Message, Permissions } from "discord.js";
 import { EventTemplate, Client } from "..";
 
 export default {
@@ -53,7 +53,14 @@ const handleCommandInteraction = (client: Client, interaction: CommandInteractio
             channelId: interaction.channelId,
             guild: interaction.guild,
             guildId: interaction.guildId,
-            reply: (options) => interaction.reply(options)
+            reply: async (options) => {
+                if (!interaction.replied) {
+                    await interaction.reply(options)
+                    return await interaction.fetchReply()
+                } else {
+                    return await interaction.followUp(options)
+                }
+            }
         }, ...args)
     }
     catch (err) {

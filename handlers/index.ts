@@ -1,4 +1,5 @@
-import Discord, { ApplicationCommandData, ApplicationCommandOptionData, ButtonInteraction, Collection, CommandInteraction, DMChannel, Guild, GuildMember, InteractionReplyOptions, Message, MessagePayload, NewsChannel, PartialDMChannel, PermissionResolvable, ReplyMessageOptions, TextBasedChannel, TextChannel, ThreadChannel, User } from 'discord.js'
+import Discord, { ApplicationCommandData, ApplicationCommandOptionData, ButtonInteraction, Collection, CommandInteraction, DMChannel, Guild, GuildCacheMessage, GuildMember, InteractionReplyOptions, Message, MessagePayload, NewsChannel, PartialDMChannel, PermissionResolvable, ReplyMessageOptions, TextBasedChannel, TextChannel, ThreadChannel, User } from 'discord.js'
+import { APIMessage } from 'discord-api-types/v9'
 import eventHandler from './events'
 import commandHandler from './commands'
 import buttonHandler from './buttons'
@@ -31,7 +32,7 @@ export type CommandTemplate = Partial<ApplicationCommandData> & {
             channelId: string,
             guild: Guild | null,
             guildId?: string | null,
-            reply: (options: string | MessagePayload | ReplyMessageOptions | InteractionReplyOptions) => Promise<Message | void>
+            reply: (options: string | MessagePayload | ReplyMessageOptions | InteractionReplyOptions) => Promise<Message | APIMessage | void>
         }, ...args: any[]): void
     }
 }

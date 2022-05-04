@@ -46,7 +46,7 @@ export interface ButtonTemplate {
 }
 
 interface ClientOptions extends Discord.ClientOptions {
-    prefix?: string
+    prefix?: string | RegExp
     owners?: string[]
     testGuilds?: string[]
 
@@ -56,7 +56,7 @@ interface ClientOptions extends Discord.ClientOptions {
 }
 
 export interface Client extends Discord.Client {
-    prefix: string
+    prefix: string | RegExp
     owners: string[]
     testGuilds?: string[]
 

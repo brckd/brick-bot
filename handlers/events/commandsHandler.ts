@@ -5,9 +5,10 @@ export default {
     name: 'messageCreate',
     run: async (client, message: Message) => {
         if (message.author.bot) return
-        if (!message.content.startsWith(client.prefix)) return
+        
+        if (message.content.search(client.prefix) === -1) return
 
-        const args = message.content.slice(client.prefix.length).trim().split(/ +/g)
+        const args = message.content.replace(client.prefix, '').trim().split(/ +/g)
         const name = args.shift()?.toLowerCase()!
         
         let command = client.commands.get(name)

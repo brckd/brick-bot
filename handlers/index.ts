@@ -1,10 +1,8 @@
-import Discord, { ApplicationCommandData, ApplicationCommandOptionData, ButtonInteraction, CommandInteraction, Message } from 'discord.js'
+import Discord, { ApplicationCommandData, ApplicationCommandOptionData, ButtonInteraction, Collection, CommandInteraction, DMChannel, Guild, GuildMember, InteractionReplyOptions, Message, MessagePayload, NewsChannel, PartialDMChannel, PermissionResolvable, ReplyMessageOptions, TextBasedChannel, TextChannel, ThreadChannel, User } from 'discord.js'
 import eventHandler from './events'
 import commandHandler from './commands'
-import slashCommandHandler from './slashcommands'
 import buttonHandler from './buttons'
 import path from 'path'
-import { getFiles } from './functions'
 
 export interface EventTemplate {
     run: {
@@ -13,41 +11,38 @@ export interface EventTemplate {
     name?: string
 }
 
-export interface CommandTemplate {
-    run: {
-        (context: {client: Client, message: Message}, ...args: any[]): void
-    },
+export type CommandTemplate = Partial<ApplicationCommandData> & {
     name?: string
+    description?: string
     category?: string
-    permissions?: Discord.PermissionResolvable | []
+    options?: ApplicationCommandOptionData[]
+    slash?: boolean | 'both'
+    permissions?: PermissionResolvable | []
     devOnly?: boolean
+    guildOnly?: boolean
+    run: {
+        (context: {
+            client: Client,
+            message?: Message,
+            interaction?: CommandInteraction,
+            member: GuildMember | null,
+            user: User,
+            channel: TextChannel | TextBasedChannel | DMChannel | PartialDMChannel | NewsChannel | ThreadChannel | null
+            channelId: string,
+            guild: Guild | null,
+            guildId?: string | null,
+            reply: (options: string | MessagePayload | ReplyMessageOptions | InteractionReplyOptions) => Promise<Message | void>
+        }, ...args: any[]): void
+    }
 }
+
+export type Command = CommandTemplate & ApplicationCommandData
 
 export interface ButtonTemplate {
     run: {
         (context: {client: Client, interaction: ButtonInteraction}, ...args: string[]): void
     },
     name?: string
-}
-
-export type SlashCommandTemplate = Partial<ApplicationCommandData> & {
-    run: {
-    (context: {client: Client, interaction: CommandInteraction}, ...args: any[]): void
-    }
-    permissions?: Discord.PermissionResolvable | []
-    name?: string
-    options?: ApplicationCommandOptionData[]
-    guildOnly?: boolean
-}
-
-export type SlashCommand = ApplicationCommandData & {
-    run: {
-    (context: {client: Client, interaction: CommandInteraction}, ...args: any[]): void
-    }
-    permissions?: Discord.PermissionResolvable | []
-    name?: string
-    options?: ApplicationCommandOptionData[]
-    guildOnly?: boolean
 }
 
 interface ClientOptions extends Discord.ClientOptions {
@@ -57,7 +52,6 @@ interface ClientOptions extends Discord.ClientOptions {
 
     eventsDir?: string
     commandsDir?: string
-    slashCommandsDir?: string
     buttonsDir?: string
 }
 
@@ -67,19 +61,15 @@ export interface Client extends Discord.Client {
     testGuilds?: string[]
 
     eventsDir: string
-    events: Discord.Collection<string, EventTemplate>
+    events: Collection<string, EventTemplate>
     loadEvents: (dir?: string) => string[]
 
     commandsDir: string
-    commands: Discord.Collection<string, CommandTemplate>
+    commands: Collection<string, CommandTemplate>
     loadCommands: (dir?: string) => string[]
 
-    slashCommandsDir: string
-    slashcommands: Discord.Collection<string, SlashCommand>
-    loadSlashCommands: (dir?: string) => string[]
-
     buttonsDir: string
-    buttons: Discord.Collection<string, ButtonTemplate>
+    buttons: Collection<string, ButtonTemplate>
     loadButtons: (dir?: string) => string[]
 }
 
@@ -101,11 +91,6 @@ export class Client extends Discord.Client {
         this.commands = new Discord.Collection()
         this.loadCommands = () => commandHandler(this)
         console.log(`Loaded ${this.loadCommands().length} command(s)`)
-
-        this.slashCommandsDir = options.slashCommandsDir || path.join(root, 'slashcommands')
-        this.slashcommands = new Discord.Collection()
-        this.loadSlashCommands = () => slashCommandHandler(this)
-        console.log(`Loaded ${this.loadSlashCommands().length} slashcommand(s)${this.testGuilds ? ' in '+this.testGuilds.length+' guild(s)' : ''}`)
         
         this.buttonsDir = options.buttonsDir || path.join(root, 'buttons')
         this.buttons = new Discord.Collection()

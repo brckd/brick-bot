@@ -2,10 +2,12 @@ import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { CommandTemplate } from "../../handlers";
 
 export default {
-    devOnly: true,
+    description: 'Sends buttons to select roles from',
+    guildOnly: true,
+    slash: 'both',
 
-    run: ({ client, message }) => {
-        message.channel.send({
+    run: ({ interaction, channel }) => {
+        channel!.send({
             embeds: [
                 new MessageEmbed()
                     .setTitle('Select Role')
@@ -28,6 +30,11 @@ export default {
                             .setLabel('Fanmod')
                     ])
             ]
+        })
+
+        interaction?.reply({
+            content: 'Buttons have been send',
+            ephemeral: true
         })
     }
 } as CommandTemplate

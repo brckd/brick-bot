@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import { SlashCommandTemplate } from "../handlers";
+import { CommandTemplate } from "../../handlers";
 
 const durations = [
     {name: '60 seconds', value: 1000 * 60},
@@ -14,6 +14,7 @@ export default {
     description: 'Time out user',
     permissions: ['MODERATE_MEMBERS'],
     guildOnly: true,
+    slash: 'both',
     
     options: [
         {
@@ -39,6 +40,6 @@ export default {
 
     run: ({ interaction }, member: GuildMember, duration: number, reason?: string) => {
         member.timeout(duration, reason)
-        interaction.reply(`${member.user.tag} has been timed out for ${durations.find(d=>duration===d.value)?.name}${reason?'for reason:\n> '+reason:''}`)
+        interaction!.reply(`${member.user.tag} has been timed out for ${durations.find(d=>duration===d.value)?.name}${reason?'for reason:\n> '+reason:''}`)
     }
-} as SlashCommandTemplate
+} as CommandTemplate

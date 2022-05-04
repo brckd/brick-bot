@@ -1,7 +1,8 @@
-import { ButtonInteraction, CommandInteraction, Interaction, Permissions } from "discord.js";
+import { ButtonInteraction, CommandInteraction, GuildMember, Interaction, Permissions } from "discord.js";
 import { EventTemplate, Client } from "..";
 
 export default {
+    name: 'interactionCreate',
     run: (client, interaction: Interaction) => {
         if (interaction.isCommand()) return handleCommandInteraction(client, interaction)
         if (interaction.isButton()) return handleButtonInteraction(client, interaction)
@@ -11,9 +12,10 @@ export default {
 } as EventTemplate
 
 const handleCommandInteraction = (client: Client, interaction: CommandInteraction) => {
-    const slash = client.slashcommands.get(interaction.commandName)
+    const slash = client.commands.get(interaction.commandName)
 
     if (!slash) return interaction.reply('Slash command not found')
+    if (!(interaction.member instanceof GuildMember)) return
 
     let missing = interaction.member ? interaction.memberPermissions?.missing(slash.permissions||[])! : new Permissions(slash.permissions||[]).toArray()
     if (missing.length > 0)
@@ -42,7 +44,17 @@ const handleCommandInteraction = (client: Client, interaction: CommandInteractio
     }) || []
 
     try {
-        slash.run({client, interaction}, ...args)
+        slash.run({
+            client,
+            interaction,
+            member: interaction.member,
+            user: interaction.user,
+            channel: interaction.channel,
+            channelId: interaction.channelId,
+            guild: interaction.guild,
+            guildId: interaction.guildId,
+            reply: (options) => interaction.reply(options)
+        }, ...args)
     }
     catch (err) {
         if (err instanceof Error && err.toString().startsWith('?'))

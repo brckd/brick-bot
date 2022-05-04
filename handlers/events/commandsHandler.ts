@@ -2,6 +2,7 @@ import { Message, Permissions } from "discord.js"
 import { EventTemplate } from ".."
 
 export default {
+    name: 'messageCreate',
     run: async (client, message: Message) => {
         if (message.author.bot) return
         if (!message.content.startsWith(client.prefix)) return
@@ -11,6 +12,7 @@ export default {
         
         let command = client.commands.get(name)
         if (!command) return
+        if (command.slash===true) return
 
         if (command.devOnly && !client.owners.includes(message.author.id))
             return message.reply('This command is only available to the bot owners')
@@ -22,8 +24,19 @@ export default {
                 return message.reply(`Missing permissions to run this command:\n>>> ${missing.join('\n')}`)
         }
 
+
         try {
-            command.run({client, message}, ...args)
+            command.run({
+                client,
+                message,
+                member: message.member,
+                user: message.author,
+                channel: message.channel,
+                channelId: message.channelId,
+                guild: message.guild,
+                guildId: message.guildId,
+                reply: (options) => message.reply(options)
+            }, ...args)
         }
         catch (err) {
             if (err instanceof Error && err.toString().startsWith('?'))

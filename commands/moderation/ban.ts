@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import { SlashCommandTemplate } from "../handlers";
+import { CommandTemplate } from "../../handlers";
 
 const durations = [
     {name: 'Don\' Delete Any', value: 0},
@@ -11,6 +11,7 @@ export default {
     description: 'Ban user',
     permissions: ['BAN_MEMBERS'],
     guildOnly: true,
+    slash: true,
 
     options: [
         {
@@ -36,16 +37,16 @@ export default {
 
     run: ({ interaction }, member: GuildMember, delete_messages: Number, reason?: string) => {
         if (!member) 
-            return interaction.reply('Invalid user')
+            return interaction!.reply('Invalid user')
 
         const user = member.user
 
-        interaction.guild?.bans.create(
+        interaction!.guild?.bans.create(
             member,
             {days: 7, reason: reason}
         )
 
-        interaction.reply(`${user.tag} has been banned ${reason?'for reason:\n> '+reason:''}
+        interaction!.reply(`${user.tag} has been banned ${reason?'for reason:\n> '+reason:''}
         ${delete_messages>0 ? durations.find(d=>delete_messages===d.value)?.name + ' of message history have been deleted' : ''}`)
     }
-} as SlashCommandTemplate
+} as CommandTemplate

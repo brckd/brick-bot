@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import { SlashCommandTemplate } from "../handlers";
+import { CommandTemplate } from "../../handlers";
 
 const durations = [
     {name: '60 seconds', value: 1000 * 60},
@@ -14,6 +14,7 @@ export default {
     description: 'Kick user',
     permissions: ['KICK_MEMBERS'],
     guildOnly: true,
+    slash: true,
 
     options: [
         {
@@ -32,6 +33,6 @@ export default {
 
     run: ({ interaction }, member: GuildMember, reason?: string) => {
         member.kick(reason)
-        interaction.reply(`${member.user.tag} has been kicked ${reason?'for reason:\n> '+reason:''}`)
+        interaction!.reply(`${member.user.tag} has been kicked ${reason?'for reason:\n> '+reason:''}`)
     }
-} as SlashCommandTemplate
+} as CommandTemplate

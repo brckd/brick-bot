@@ -8,7 +8,7 @@ export default {
 
         client.application?.commands.set(client.testGuilds ? [] : [...client.slashcommands.values()])
 
-        console.log(`Loaded ${client.slashcommands.size} slashcommand${client.slashcommands.size===1?'':'s'}`)
+        console.log(`Loaded ${client.slashcommands.size} slashcommand${client.slashcommands.size===1?'':'s'} ${client.testGuilds ? 'in '+client.testGuilds.length+' guild(s)' : ''}`)
 
         console.log(`Logged in as ${client.user?.tag}`)
     }

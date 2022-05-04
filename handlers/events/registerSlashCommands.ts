@@ -5,11 +5,9 @@ export default {
     run: (client) => {
         const slashes = [...client.commands.values()].filter(c=>c.slash) as Command[]
         
-        client.guilds.cache.forEach(guild => {
-            guild.commands.set(client.testGuilds?.includes(guild.id) ? slashes : [])
-            console.log(guild.name)
+        client.testGuilds?.forEach(guild => {
+            client.guilds.cache.get(guild)?.commands.set(slashes)
         })
-        console.log(slashes)
 
         client.application?.commands.set(client.testGuilds ? [] : slashes)
     }

@@ -14,7 +14,7 @@ export default (client: Client) => {
         if (!button)
             return console.error(`Button at ${p} is undefined`)
 
-        button.name = button.name || path.basename(p, ext)
+        button.name = button.name ?? path.basename(p, ext)
         client.buttons.set(button.name, button)
     })
 

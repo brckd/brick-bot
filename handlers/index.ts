@@ -76,23 +76,23 @@ export interface Client extends Discord.Client {
 export class Client extends Discord.Client {
     constructor(options: ClientOptions) {
         super(options)
-        this.prefix = options.prefix || '!'
-        this.owners = options.owners || []
+        this.prefix = options.prefix ?? '!'
+        this.owners = options.owners ?? []
         this.testGuilds = options.testGuilds
 
         const root = path.dirname(require.main!.filename)
 
-        this.eventsDir = options.eventsDir || path.join(root, 'events')
+        this.eventsDir = options.eventsDir ?? path.join(root, 'events')
         this.events = new Discord.Collection()
         this.loadEvents = () => eventHandler(this)
         console.log(`Loaded ${this.loadEvents().length} event(s) (+ ${eventHandler(this, path.join(__dirname, 'events')).length} builtin)`)
 
-        this.commandsDir = options.commandsDir || path.join(root, 'commands')
+        this.commandsDir = options.commandsDir ?? path.join(root, 'commands')
         this.commands = new Discord.Collection()
         this.loadCommands = () => commandHandler(this)
         console.log(`Loaded ${this.loadCommands().length} command(s)`)
         
-        this.buttonsDir = options.buttonsDir || path.join(root, 'buttons')
+        this.buttonsDir = options.buttonsDir ?? path.join(root, 'buttons')
         this.buttons = new Discord.Collection()
         this.loadButtons = () => buttonHandler(this)
         console.log(`Loaded ${this.loadButtons().length} button(s)`)

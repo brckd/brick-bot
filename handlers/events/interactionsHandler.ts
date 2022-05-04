@@ -17,7 +17,7 @@ const handleCommandInteraction = (client: Client, interaction: CommandInteractio
     if (!slash) return interaction.reply('Slash command not found')
     if (!(interaction.member instanceof GuildMember)) return
 
-    let missing = interaction.member ? interaction.memberPermissions?.missing(slash.permissions||[])! : new Permissions(slash.permissions||[]).toArray()
+    let missing = interaction.member ? interaction.memberPermissions?.missing(slash.permissions??[])! : new Permissions(slash.permissions??[]).toArray()
     if (missing.length > 0)
         return interaction.reply({
             content: `Missing permissions to run this command:\n>>> ${missing.join('\n')}`,
@@ -41,7 +41,7 @@ const handleCommandInteraction = (client: Client, interaction: CommandInteractio
             case 'STRING': return options.getString(option.name)
             case 'USER': return slash.guildOnly ? options.getMember(option.name) : options.getUser(option.name)
         }
-    }) || []
+    }) ?? []
 
     try {
         slash.run({

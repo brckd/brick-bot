@@ -15,8 +15,8 @@ export default (client: Client) => {
             if (!command)
                 return console.error(`Command at ${p} is undefined`)
             
-            command.name = command.name || path.basename(p, ext)
-            command.category = command.category || category
+            command.name = command.name ?? path.basename(p, ext)
+            command.category = command.category ?? category
             client.commands.set(command.name, command)
         })
     })

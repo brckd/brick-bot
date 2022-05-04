@@ -4,7 +4,7 @@ import path from 'path'
 
 export default (client: Client, dir?: string) => {
     const ext = '.ts'
-    let events = getFiles(dir || client.eventsDir, ext)
+    let events = getFiles(dir ?? client.eventsDir, ext)
 
     events.forEach((p) => {
         delete require.cache[require.resolve(p)]
@@ -14,7 +14,7 @@ export default (client: Client, dir?: string) => {
             return console.error(`Event at ${p} is undefined`)
         
         const filename = path.basename(p, ext)
-        event.name = event.name || filename
+        event.name = event.name ?? filename
 
         if (!client.events.has(filename))
             client.on(event.name, (...args) => {

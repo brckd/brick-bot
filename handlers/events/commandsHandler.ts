@@ -25,7 +25,6 @@ export default {
                 return message.reply(`Missing permissions to run this command:\n>>> ${missing.join('\n')}`)
         }
 
-
         try {
             command.run({
                 client,
@@ -36,7 +35,27 @@ export default {
                 channelId: message.channelId,
                 guild: message.guild,
                 guildId: message.guildId,
-                reply: (options) => message.reply(options)
+                reply: async (options) => {
+                    if (hasOwnProperty(options, 'ephemeral') && hasOwnProperty(options, 'content') && options.ephemeral===true) {
+                        let sent
+                        try {
+                            sent = await message.author.send(options)
+                        }
+                        catch {
+                            options.content += '\n`Please enable DM messages to receive permanent replies`'
+                            sent = message.reply(options)
+                            sent.then(repliedMessage => {
+                                setTimeout(() => {
+                                    repliedMessage.delete()
+                                    message.delete()
+                                }, 1000 * 5);
+                            })
+                        }
+                        return sent
+                    } else {
+                        return message.reply(options)
+                    }
+                }
             }, ...args)
         }
         catch (err) {
@@ -47,3 +66,10 @@ export default {
         }
     }
 } as EventTemplate
+
+function hasOwnProperty<T, K extends PropertyKey>(
+    obj: T,
+    prop: K
+): obj is T & Record<K, unknown> {
+    return Object.prototype.hasOwnProperty.call(obj, prop);
+}

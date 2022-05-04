@@ -11,7 +11,7 @@ export default (client: Client, reload: boolean) => {
 
         const event = require(`../events/${f}`).default as EventTemplate
         if (!event)
-            return console.error(``)
+            return console.error(`Event at ${f} is undefined`)
 
         const name = event.name || f.slice(0, f.length-ending.length)
         client.events.set(name, event)

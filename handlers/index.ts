@@ -1,7 +1,8 @@
-import Discord, { ApplicationCommandData, ApplicationCommandOptionData, CommandInteraction, Message } from 'discord.js'
+import Discord, { ApplicationCommandData, ApplicationCommandOptionData, ButtonInteraction, CommandInteraction, Message } from 'discord.js'
 import eventHandler from './events'
 import commandHandler from './commands'
 import slashCommandHandler from './slashcommands'
+import buttonHandler from './buttons'
 
 export interface EventTemplate {
     run: {
@@ -18,6 +19,13 @@ export interface CommandTemplate {
     category?: string
     permissions?: Discord.PermissionResolvable | []
     devOnly?: boolean
+}
+
+export interface ButtonTemplate {
+    run: {
+        (context: {client: Client, interaction: ButtonInteraction}, ...args: string[]): void
+    },
+    name?: string
 }
 
 export type SlashCommandTemplate = Partial<ApplicationCommandData> & {
@@ -59,6 +67,9 @@ export interface Client extends Discord.Client {
 
     slashcommands: Discord.Collection<string, SlashCommand>
     loadSlashCommands: (reload: boolean) => void
+
+    buttons: Discord.Collection<string, ButtonTemplate>
+    loadButtons: (reload: boolean) => void
 }
 
 export class Client extends Discord.Client {
@@ -79,5 +90,9 @@ export class Client extends Discord.Client {
         this.slashcommands = new Discord.Collection()
         this.loadSlashCommands = (reload: boolean) => slashCommandHandler(this, reload)
         this.loadSlashCommands(false)
+        
+        this.buttons = new Discord.Collection()
+        this.loadButtons = (reload: boolean) => buttonHandler(this, reload)
+        this.loadButtons(false)
     }
 }

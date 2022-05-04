@@ -1,7 +1,7 @@
 import { EventTemplate } from "../handlers"
 
 export default {
-    run: async (client) => {
+    run: (client) => {
         client.guilds.cache.forEach(guild => {
             guild.commands.set(client.testGuilds?.includes(guild.id) ? [...client.slashcommands.values()] : [])
         })

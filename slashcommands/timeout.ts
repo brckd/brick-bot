@@ -13,7 +13,8 @@ const durations = [
 export default {
     description: 'Time out user',
     permissions: ['MODERATE_MEMBERS'],
-
+    guildOnly: true,
+    
     options: [
         {
             name: 'user',

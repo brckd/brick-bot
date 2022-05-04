@@ -1,19 +1,21 @@
 import { Client, EventTemplate } from ".";
 import { getFiles } from "./functions";
+import path from 'path'
 
 export default (client: Client, reload: boolean) => {
-    const ending = '.ts'
-    let events = getFiles('events/', ending)
+    const ext = '.ts'
+    let events = getFiles(client.eventsDir, ext)
 
-    events.forEach((f, i) => {
+    events.forEach((p, i) => {
+
         if (reload)
-            delete require.cache[require.resolve(`../events/${f}`)]
+            delete require.cache[require.resolve(p)]
 
-        const event = require(`../events/${f}`).default as EventTemplate
+        const event = require(p).default as EventTemplate
         if (!event)
-            return console.error(`Event at ${f} is undefined`)
+            return console.error(`Event at ${p} is undefined`)
 
-        const name = event.name || f.slice(0, f.length-ending.length)
+        const name = event.name || path.basename(p, ext)
         client.events.set(name, event)
 
         if (!reload)

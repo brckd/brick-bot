@@ -3,6 +3,7 @@ import eventHandler from './events'
 import commandHandler from './commands'
 import slashCommandHandler from './slashcommands'
 import buttonHandler from './buttons'
+import path from 'path'
 
 export interface EventTemplate {
     run: {
@@ -52,6 +53,11 @@ interface ClientOptions extends Discord.ClientOptions {
     prefix?: string
     owners?: string[]
     testGuilds?: string[]
+
+    eventsDir?: string
+    commandsDir?: string
+    slashCommandsDir?: string
+    buttonsDir?: string
 }
 
 export interface Client extends Discord.Client {
@@ -59,15 +65,19 @@ export interface Client extends Discord.Client {
     owners: string[]
     testGuilds?: string[]
 
+    eventsDir: string
     events: Discord.Collection<string, EventTemplate>
     loadEvents: (reload: boolean) => void
 
+    commandsDir: string
     commands: Discord.Collection<string, CommandTemplate>
     loadCommands: (reload: boolean) => void
 
+    slashCommandsDir: string
     slashcommands: Discord.Collection<string, SlashCommand>
     loadSlashCommands: (reload: boolean) => void
 
+    buttonsDir: string
     buttons: Discord.Collection<string, ButtonTemplate>
     loadButtons: (reload: boolean) => void
 }
@@ -79,18 +89,24 @@ export class Client extends Discord.Client {
         this.owners = options.owners || []
         this.testGuilds = options.testGuilds
 
+        const root = path.dirname(require.main!.filename)
+
+        this.eventsDir = options.eventsDir || path.join(root, 'events')
         this.events = new Discord.Collection()
         this.loadEvents = (reload: boolean) => eventHandler(this, reload)
         this.loadEvents(false)
 
+        this.commandsDir = options.commandsDir || path.join(root, 'commands')
         this.commands = new Discord.Collection()
         this.loadCommands = (reload: boolean) => commandHandler(this, reload)
         this.loadCommands(false)
-        
+
+        this.slashCommandsDir = options.slashCommandsDir || path.join(root, 'slashcommands')
         this.slashcommands = new Discord.Collection()
         this.loadSlashCommands = (reload: boolean) => slashCommandHandler(this, reload)
         this.loadSlashCommands(false)
         
+        this.buttonsDir = options.buttonsDir || path.join(root, 'buttons')
         this.buttons = new Discord.Collection()
         this.loadButtons = (reload: boolean) => buttonHandler(this, reload)
         this.loadButtons(false)

@@ -1,22 +1,21 @@
 import { getFiles } from './functions'
 import fs from 'fs'
 import { Client, CommandTemplate } from '.'
+import path from 'path'
 
 export default (client: Client, reload: boolean) => {
-    const ending = '.ts'
+    const ext = '.ts'
 
-    fs.readdirSync('commands/').forEach((category) => {
-        const files = getFiles(`commands/${category}`, ending)
-
-        files.forEach((f) => {
+    fs.readdirSync(client.commandsDir).forEach((category) => {
+        getFiles(path.join(client.commandsDir, category), ext).forEach((p) => {
             if (reload)
-                delete require.cache[require.resolve(`commands/${category}/${f}`)]
+                delete require.cache[require.resolve(p)]
 
-            const command = require(`../commands/${category}/${f}`).default as CommandTemplate
+            const command = require(p).default as CommandTemplate
             if (!command)
-                return console.error(`Command at ${f} is undefined`)
+                return console.error(`Command at ${p} is undefined`)
 
-            command.name = command.name || f.slice(0, f.length-ending.length)
+            command.name = command.name || path.basename(p, ext)
             command.category = command.category || category
             client.commands.set(command.name, command)
         })

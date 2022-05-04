@@ -1,18 +1,19 @@
 import { getFiles } from './functions'
 import { Client, SlashCommand } from '.'
+import path from 'path'
 
 export default (client: Client, reload: boolean) => {
-    const ending = '.ts'
+    const ext = '.ts'
 
-    getFiles('slashcommands/', ending).forEach((f) => {
+    getFiles(client.slashCommandsDir, ext).forEach((p) => {
         if (reload)
-            delete require.cache[require.resolve(`../slashcommands/${f}`)]
+            delete require.cache[require.resolve(p)]
 
-        const slash = require(`../slashcommands/${f}`).default as SlashCommand
+        const slash = require(p).default as SlashCommand
         if (!slash)
-            return console.error(`Event at ${f} is undefined`)
+            return console.error(`Event at ${p} is undefined`)
 
-        slash.name = slash.name || f.slice(0, f.length-ending.length)
+        slash.name = slash.name || path.basename(p, ext)
         client.slashcommands.set(slash.name, slash)
     })
 }

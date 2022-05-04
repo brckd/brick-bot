@@ -13,13 +13,13 @@ export interface EventTemplate {
 
 export type CommandTemplate = Partial<ApplicationCommandData> & {
     name?: string
-    description?: string
     category?: string
     options?: ApplicationCommandOptionData[]
     slash?: boolean | 'both'
     permissions?: PermissionResolvable | []
     devOnly?: boolean
     guildOnly?: boolean
+    
     run: {
         (context: {
             client: Client,

@@ -5,10 +5,13 @@ const client = new Client({
     intents: [
         'GUILDS',
         'GUILD_MESSAGES',
-        'DIRECT_MESSAGES'
+        'DIRECT_MESSAGES',
+        'GUILD_MESSAGE_REACTIONS',
+        'DIRECT_MESSAGE_REACTIONS'
     ],
     partials: [
-        'CHANNEL'
+        'CHANNEL',
+        'REACTION'
     ],
 
     allowedMentions: {users: [], roles: [], repliedUser: false},

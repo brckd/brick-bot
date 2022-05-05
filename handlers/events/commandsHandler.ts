@@ -6,9 +6,15 @@ export default {
     run: async (client, message: Message) => {
         if (message.author.bot) return
         
-        if (message.content.search(client.prefix) === -1) return
+        let prefix = client.prefix.find((prefix) =>
+            typeof(prefix) === 'string'
+            ? message.content.includes(prefix)
+            : message.content.search(prefix)
+        )
+        
+        if (!prefix) return
 
-        const args = message.content.replace(client.prefix, '').trim().split(/ +/g)
+        const args = message.content.replace(prefix, '').trim().split(/ +/g)
         const name = args.shift()?.toLowerCase()!
         
         let command = client.commands.get(name)
@@ -42,6 +48,7 @@ export default {
                         let sent
                         try {
                             sent = await message.author.send(options)
+                            message.delete()
                         }
                         catch {
                             options.content += '\n`Please enable DM messages to receive permanent replies`'

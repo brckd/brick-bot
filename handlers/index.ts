@@ -47,7 +47,7 @@ export interface ButtonTemplate {
 }
 
 interface ClientOptions extends Discord.ClientOptions {
-    prefix?: string | RegExp
+    prefix?: string | RegExp | (string | RegExp)[]
     owners?: string[]
     testGuilds?: string[]
 
@@ -57,7 +57,7 @@ interface ClientOptions extends Discord.ClientOptions {
 }
 
 export interface Client extends Discord.Client {
-    prefix: string | RegExp
+    prefix: (string | RegExp)[]
     owners: string[]
     testGuilds?: string[]
 
@@ -77,7 +77,9 @@ export interface Client extends Discord.Client {
 export class Client extends Discord.Client {
     constructor(options: ClientOptions) {
         super(options)
-        this.prefix = options.prefix ?? '!'
+
+        this.prefix = options.prefix instanceof Array ? options.prefix ?? ['!'] : [options.prefix ?? '!']
+            
         this.owners = options.owners ?? []
         this.testGuilds = options.testGuilds
 

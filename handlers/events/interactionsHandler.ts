@@ -44,6 +44,7 @@ const handleCommandInteraction = (client: Client, interaction: CommandInteractio
     }) ?? []
 
     try {
+        const reply = 
         slash.run({
             client,
             interaction,
@@ -53,10 +54,17 @@ const handleCommandInteraction = (client: Client, interaction: CommandInteractio
             channelId: interaction.channelId,
             guild: interaction.guild,
             guildId: interaction.guildId,
-            reply: async (options) => {
+            reply: async (options: any) => {
                 if (!interaction.replied) {
                     await interaction.reply(options)
-                    return await interaction.fetchReply()
+                } else {
+                    return await interaction.followUp(options)
+                }
+            },
+            fetchedReply: async (options: any) => {
+                if (!interaction.replied) {
+                    await interaction.reply(options)
+                    return interaction.fetchReply()
                 } else {
                     return await interaction.followUp(options)
                 }

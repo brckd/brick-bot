@@ -33,6 +33,7 @@ export type CommandTemplate = Partial<ApplicationCommandData> & {
             guild: Guild | null,
             guildId?: string | null,
             reply: (options: string | MessagePayload | ReplyMessageOptions | InteractionReplyOptions) => Promise<Message | APIMessage | void>
+            fetchedReply: (options: string | MessagePayload | ReplyMessageOptions | InteractionReplyOptions) => Promise<Message | APIMessage>
         }, ...args: any[]): void
     }
 }

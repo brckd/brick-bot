@@ -34,6 +34,28 @@ export default {
         }
 
         try {
+            const reply = async (options: any) => {
+                if (hasOwnProperty(options, 'ephemeral') && hasOwnProperty(options, 'content') && options.ephemeral===true) {
+                    let sent
+                    try {
+                        sent = await message.author.send(options)
+                        message.delete()
+                    }
+                    catch {
+                        options.content += '\n`Please enable DM messages to receive permanent replies`'
+                        sent = message.reply(options)
+                        sent.then(repliedMessage => {
+                            setTimeout(() => {
+                                repliedMessage.delete()
+                                message.delete()
+                            }, 1000 * 5);
+                        })
+                    }
+                    return sent
+                } else {
+                    return message.reply(options)
+                }
+            }
             command.run({
                 client,
                 message,
@@ -43,28 +65,8 @@ export default {
                 channelId: message.channelId,
                 guild: message.guild,
                 guildId: message.guildId,
-                reply: async (options) => {
-                    if (hasOwnProperty(options, 'ephemeral') && hasOwnProperty(options, 'content') && options.ephemeral===true) {
-                        let sent
-                        try {
-                            sent = await message.author.send(options)
-                            message.delete()
-                        }
-                        catch {
-                            options.content += '\n`Please enable DM messages to receive permanent replies`'
-                            sent = message.reply(options)
-                            sent.then(repliedMessage => {
-                                setTimeout(() => {
-                                    repliedMessage.delete()
-                                    message.delete()
-                                }, 1000 * 5);
-                            })
-                        }
-                        return sent
-                    } else {
-                        return message.reply(options)
-                    }
-                }
+                reply: reply,
+                fetchedReply: reply
             }, ...args)
         }
         catch (err) {

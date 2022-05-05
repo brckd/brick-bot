@@ -5,9 +5,6 @@ export default {
     slash: 'both',
     
     run: ({ client, reply }) => {
-        reply({
-            content: `> 🏓 *Pong!*\nBot Latency: **${Math.round(client.ws.ping)}**ms`,
-            ephemeral: true
-        })
+        reply(`> 🏓 *Pong!*\nBot Latency: **${Math.round(client.ws.ping)}**ms`)
     }
 } as CommandTemplate

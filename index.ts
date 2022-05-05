@@ -4,8 +4,13 @@ import { Client } from './handlers'
 const client = new Client({
     intents: [
         'GUILDS',
-        'GUILD_MESSAGES'
+        'GUILD_MESSAGES',
+        'DIRECT_MESSAGES'
     ],
+    partials: [
+        'CHANNEL'
+    ],
+
     allowedMentions: {users: [], roles: [], repliedUser: false},
     
     prefix: '!',

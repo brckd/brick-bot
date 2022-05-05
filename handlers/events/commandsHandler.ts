@@ -18,7 +18,9 @@ export default {
         if (command.devOnly && !client.owners.includes(message.author.id))
             return message.reply('This command is only available to the bot owners')
         
-        
+        if (command.guildOnly && !message.guild)
+            return message.reply('This command can only be run in a guild')
+
         if (command.permissions) {
             let missing = message.member ? message.member.permissions.missing(command.permissions) : new Permissions(command.permissions).toArray()
             if(missing.length>0)

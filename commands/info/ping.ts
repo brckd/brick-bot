@@ -1,7 +1,7 @@
 import { CommandTemplate } from "../../handlers"
 
 export default {
-    types: ['LEGACY', 'SLASH', 'MESSAGE', 'USER'],
+    types: ['LEGACY', 'SLASH'],
     description: 'Replies with 🏓 *Ping!* and the bot latency',
     
     run: ({ client, reply }) => {

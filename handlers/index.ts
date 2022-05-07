@@ -47,6 +47,7 @@ export interface Command extends CommandTemplate {
     type: 0 | 1 | 2 | 3
     name: string
     description: string
+    category: string
 }
 
 export interface ButtonTemplate {
@@ -78,6 +79,7 @@ export interface Client extends Discord.Client {
     commandsDir: string
     commands: Collection<string, Command>
     loadCommands: (dir?: string) => number
+    categories: Collection<string, Collection<string, Command>>
 
     buttonsDir: string
     buttons: Collection<string, ButtonTemplate>
@@ -102,6 +104,7 @@ export class Client extends Discord.Client {
 
         this.commandsDir = options.commandsDir ?? path.join(root, 'commands')
         this.commands = new Discord.Collection()
+        this.categories = new Discord.Collection()
         this.loadCommands = () => commandHandler(this)
         console.log(`Loaded ${this.loadCommands()} command(s)`)
         

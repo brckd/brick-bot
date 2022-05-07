@@ -11,10 +11,10 @@ const durations = [
 ]
 
 export default {
+    types: ['LEGACY', 'SLASH'],
     description: 'Kick user',
     permissions: ['KICK_MEMBERS'],
     guildOnly: true,
-    slash: true,
 
     options: [
         {
@@ -31,8 +31,8 @@ export default {
         }
     ],
 
-    run: ({ interaction }, member: GuildMember, reason?: string) => {
+    run: ({ cmdInter }, member: GuildMember, reason?: string) => {
         member.kick(reason)
-        interaction!.reply(`${member.user.tag} has been kicked ${reason?'for reason:\n> '+reason:''}`)
+        cmdInter!.reply(`${member.user.tag} has been kicked ${reason?'for reason:\n> '+reason:''}`)
     }
 } as CommandTemplate

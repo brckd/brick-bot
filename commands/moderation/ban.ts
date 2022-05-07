@@ -8,10 +8,10 @@ const durations = [
 ]
 
 export default {
+    types: ['LEGACY', 'SLASH'],
     description: 'Ban user',
     permissions: ['BAN_MEMBERS'],
     guildOnly: true,
-    slash: true,
 
     options: [
         {
@@ -35,18 +35,18 @@ export default {
         }
     ],
 
-    run: ({ interaction }, member: GuildMember, delete_messages: Number, reason?: string) => {
+    run: ({ cmdInter }, member: GuildMember, delete_messages: Number, reason?: string) => {
         if (!member) 
-            return interaction!.reply('Invalid user')
+            return cmdInter!.reply('Invalid user')
 
         const user = member.user
 
-        interaction!.guild?.bans.create(
+        cmdInter!.guild?.bans.create(
             member,
             {days: 7, reason: reason}
         )
 
-        interaction!.reply(`${user.tag} has been banned ${reason?'for reason:\n> '+reason:''}
+        cmdInter!.reply(`${user.tag} has been banned ${reason?'for reason:\n> '+reason:''}
         ${delete_messages>0 ? durations.find(d=>delete_messages===d.value)?.name + ' of message history have been deleted' : ''}`)
     }
 } as CommandTemplate

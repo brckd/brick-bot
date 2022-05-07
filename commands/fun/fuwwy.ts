@@ -8,8 +8,8 @@ const replacements = {
 } as {[key: string]: string}
 
 export default {
+    types: ['LEGACY', 'SLASH'],
     description: 'Fuwwyfy your text',
-    slash: 'both',
 
     options: [
         {

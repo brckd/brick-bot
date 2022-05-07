@@ -1,4 +1,4 @@
-import Discord, { ApplicationCommandData, ApplicationCommandOptionData, ButtonInteraction, Collection, CommandInteraction, DMChannel, Guild, GuildCacheMessage, GuildMember, InteractionReplyOptions, Message, MessagePayload, NewsChannel, PartialDMChannel, PermissionResolvable, ReplyMessageOptions, TextBasedChannel, TextChannel, ThreadChannel, User } from 'discord.js'
+import Discord, { ApplicationCommandOptionData, ButtonInteraction, Collection, CommandInteraction, DMChannel, Guild, GuildMember, Interaction, InteractionReplyOptions, Message, MessageContextMenuInteraction, MessageInteraction, MessagePayload, NewsChannel, PartialDMChannel, PermissionResolvable, ReplyMessageOptions, TextBasedChannel, TextChannel, ThreadChannel, User, UserContextMenuInteraction } from 'discord.js'
 import { APIMessage } from 'discord-api-types/v9'
 import eventHandler from './events'
 import commandHandler from './commands'
@@ -12,11 +12,13 @@ export interface EventTemplate {
     name?: string
 }
 
-export type CommandTemplate = Partial<ApplicationCommandData> & {
+export interface CommandTemplate {
+    types: ('LEGACY' | 'SLASH' | 'USER' | 'MESSAGE')[]
+    type?: 0 | 1 | 2 | 3
     name?: string
     category?: string
+    description?: string
     options?: ApplicationCommandOptionData[]
-    slash?: boolean | 'both'
     permissions?: PermissionResolvable | []
     devOnly?: boolean
     guildOnly?: boolean
@@ -24,8 +26,11 @@ export type CommandTemplate = Partial<ApplicationCommandData> & {
     run: {
         (context: {
             client: Client,
-            message?: Message,
-            interaction?: CommandInteraction,
+            message?: Message | APIMessage,
+            inter?: Interaction,
+            cmdInter?: CommandInteraction,
+            msgInter?: MessageContextMenuInteraction,
+            usrInter?: UserContextMenuInteraction,
             member: GuildMember | null,
             user: User,
             channel: TextChannel | TextBasedChannel | DMChannel | PartialDMChannel | NewsChannel | ThreadChannel | null
@@ -38,7 +43,11 @@ export type CommandTemplate = Partial<ApplicationCommandData> & {
     }
 }
 
-export type Command = CommandTemplate & ApplicationCommandData
+export interface Command extends CommandTemplate {
+    type: 0 | 1 | 2 | 3
+    name: string
+    description: string
+}
 
 export interface ButtonTemplate {
     run: {
@@ -64,15 +73,15 @@ export interface Client extends Discord.Client {
 
     eventsDir: string
     events: Collection<string, EventTemplate>
-    loadEvents: (dir?: string) => string[]
+    loadEvents: (dir?: string) => number
 
     commandsDir: string
-    commands: Collection<string, CommandTemplate>
-    loadCommands: (dir?: string) => string[]
+    commands: Collection<string, Command>
+    loadCommands: (dir?: string) => number
 
     buttonsDir: string
     buttons: Collection<string, ButtonTemplate>
-    loadButtons: (dir?: string) => string[]
+    loadButtons: (dir?: string) => number
 }
 
 export class Client extends Discord.Client {
@@ -89,16 +98,16 @@ export class Client extends Discord.Client {
         this.eventsDir = options.eventsDir ?? path.join(root, 'events')
         this.events = new Discord.Collection()
         this.loadEvents = () => eventHandler(this)
-        console.log(`Loaded ${this.loadEvents().length} event(s) (+ ${eventHandler(this, path.join(__dirname, 'events')).length} builtin)`)
+        console.log(`Loaded ${this.loadEvents()} event(s) (+ ${eventHandler(this, path.join(__dirname, 'events'))} builtin)`)
 
         this.commandsDir = options.commandsDir ?? path.join(root, 'commands')
         this.commands = new Discord.Collection()
         this.loadCommands = () => commandHandler(this)
-        console.log(`Loaded ${this.loadCommands().length} command(s)`)
+        console.log(`Loaded ${this.loadCommands()} command(s)`)
         
         this.buttonsDir = options.buttonsDir ?? path.join(root, 'buttons')
         this.buttons = new Discord.Collection()
         this.loadButtons = () => buttonHandler(this)
-        console.log(`Loaded ${this.loadButtons().length} button(s)`)
+        console.log(`Loaded ${this.loadButtons()} button(s)`)
     }
 }

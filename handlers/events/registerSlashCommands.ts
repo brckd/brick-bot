@@ -1,14 +1,14 @@
-import { Command, EventTemplate } from ".."
+import { EventTemplate, Command } from ".."
 
 export default {
     name: 'ready',
     run: (client) => {
-        const slashes = [...client.commands.values()].filter(c=>c.slash) as Command[]
-        
+        const commands = [...client.commands.values()].filter(c => c.type >= 1)
+    
         client.testGuilds?.forEach(guild => {
-            client.guilds.cache.get(guild)?.commands.set(slashes)
+            client.guilds.cache.get(guild)?.commands.set(commands)
         })
 
-        client.application?.commands.set(client.testGuilds ? [] : slashes)
+        client.application?.commands.set(client.testGuilds ? [] : commands)
     }
 } as EventTemplate

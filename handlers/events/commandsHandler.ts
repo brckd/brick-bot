@@ -19,7 +19,7 @@ export default {
         
         let command = client.commands.get(name)
         if (!command) return
-        if (command.slash===true) return
+        if (!command.types?.includes('LEGACY')) return
 
         if (command.devOnly && !client.owners.includes(message.author.id))
             return message.reply('This command is only available to the bot owners')

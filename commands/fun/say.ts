@@ -1,8 +1,8 @@
 import { CommandTemplate } from "../../handlers"
 
 export default {
+    types: ['LEGACY', 'SLASH'],
     description: 'Repeats what you said',
-    slash: 'both',
 
     options: [
         {
@@ -13,8 +13,8 @@ export default {
         }
     ],
 
-    run: ({ interaction, channel }, ...text) => {
+    run: ({ cmdInter, channel }, ...text) => {
         channel?.send(text.join(' '))
-        interaction?.reply({ content: 'Text sent', ephemeral: true })
+        cmdInter?.reply({ content: 'Text sent', ephemeral: true })
     }
 } as CommandTemplate

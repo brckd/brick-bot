@@ -2,11 +2,11 @@ import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { CommandTemplate } from "../../handlers";
 
 export default {
+    types: ['LEGACY', 'SLASH'],
     description: 'Sends buttons to select roles from',
     guildOnly: true,
-    slash: 'both',
 
-    run: ({ interaction, channel }) => {
+    run: ({ cmdInter, channel }) => {
         channel!.send({
             embeds: [
                 new MessageEmbed()
@@ -32,7 +32,7 @@ export default {
             ]
         })
 
-        interaction?.reply({
+        cmdInter?.reply({
             content: 'Buttons have been send',
             ephemeral: true
         })

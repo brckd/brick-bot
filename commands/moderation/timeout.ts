@@ -11,10 +11,10 @@ const durations = [
 ]
 
 export default {
+    types: ['LEGACY', 'SLASH'],
     description: 'Time out user',
     permissions: ['MODERATE_MEMBERS'],
     guildOnly: true,
-    slash: 'both',
     
     options: [
         {
@@ -38,8 +38,8 @@ export default {
         }
     ],
 
-    run: ({ interaction }, member: GuildMember, duration: number, reason?: string) => {
+    run: ({ cmdInter }, member: GuildMember, duration: number, reason?: string) => {
         member.timeout(duration, reason)
-        interaction!.reply(`${member.user.tag} has been timed out for ${durations.find(d=>duration===d.value)?.name}${reason?'for reason:\n> '+reason:''}`)
+        cmdInter!.reply(`${member.user.tag} has been timed out for ${durations.find(d=>duration===d.value)?.name}${reason?'for reason:\n> '+reason:''}`)
     }
 } as CommandTemplate

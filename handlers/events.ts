@@ -4,14 +4,16 @@ import path from 'path'
 
 export default (client: Client, dir?: string) => {
     const ext = '.ts'
-    let events = getFiles(dir ?? client.eventsDir, ext)
+    let events = 0
 
-    events.forEach((p) => {
+    getFiles(dir ?? client.eventsDir, ext).forEach((p) => {
         delete require.cache[require.resolve(p)]
 
         const event = require(p).default as EventTemplate
         if (!event)
             return console.error(`Event at ${p} is undefined`)
+            
+        events++
         
         const filename = path.basename(p, ext)
         event.name = event.name ?? filename

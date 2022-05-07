@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0",
-    "mongoose": "^6.3.1"
+    "dotenv": "^16.0.0"
   }
 }

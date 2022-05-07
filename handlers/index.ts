@@ -22,6 +22,10 @@ export interface CommandTemplate {
     permissions?: PermissionResolvable | []
     devOnly?: boolean
     guildOnly?: boolean
+
+    init?: {
+        (client: Client, command: CommandTemplate): void
+    }
     
     run: {
         (context: {

@@ -52,8 +52,7 @@ const handleApplicationCommand = (client: Client, interaction: CommandInteractio
     }
 
     try {
-        const reply = 
-        command.run({
+        const reply = command.run({
             client,
             inter: interaction,
             message: interaction.isMessageContextMenu() ? interaction.targetMessage : undefined,

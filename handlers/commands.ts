@@ -19,6 +19,8 @@ export default (client: Client) => {
             
             command.name = command.name ?? path.basename(p, ext)
             command.category = command.category ?? category
+
+            if(command.init) command.init(client, command)
             for (let type of command.types) {
                 const c = {...command} as Command
 
@@ -36,8 +38,8 @@ export default (client: Client) => {
                 c.type = ['LEGACY', 'SLASH', 'USER', 'MESSAGE'].indexOf(type) as 0|1|2|3
                 client.commands.set(c.name, c)
             }
-            
         })
+        client.categories.set(category.replace(/\b[a-z]/g, c=>c.toUpperCase()), client.commands.filter(c=>c.category===category))
     })
 
     return commands

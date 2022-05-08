@@ -1,4 +1,4 @@
-import { EventTemplate, Command } from ".."
+import { EventTemplate } from "handlers"
 
 export default {
     name: 'ready',

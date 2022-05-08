@@ -1,5 +1,4 @@
 .env
 package-lock.json
-tsconfig.json
 node_modules/
 commands/test/test.ts

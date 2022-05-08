@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import { CommandTemplate } from "../../handlers";
+import { CommandTemplate } from "handlers";
 
 const durations = [
     {name: '60 seconds', value: 1000 * 60},

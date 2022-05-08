@@ -1,5 +1,5 @@
 import { ButtonInteraction, CommandInteraction, GuildMember, Interaction, MessageContextMenuInteraction, Permissions, UserContextMenuInteraction } from "discord.js";
-import { EventTemplate, Client } from "..";
+import { EventTemplate, Client } from "handlers";
 
 export default {
     name: 'interactionCreate',

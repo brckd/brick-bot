@@ -1,4 +1,4 @@
-import { Client, CommandTemplate } from "../../handlers"
+import { Client, CommandTemplate } from "handlers"
 import Discord from 'discord.js'
 
 

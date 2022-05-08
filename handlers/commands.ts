@@ -1,6 +1,6 @@
 import { getFiles } from './functions'
 import fs from 'fs'
-import { Client, Command, CommandTemplate } from '.'
+import { Client, Command, CommandTemplate } from 'handlers'
 import path from 'path'
 
 export default (client: Client) => {

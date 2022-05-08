@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { CommandTemplate } from "../../handlers";
+import { CommandTemplate } from "handlers";
 
 export default {
     types: ['MESSAGE'],

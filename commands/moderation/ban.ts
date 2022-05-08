@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import { CommandTemplate } from "../../handlers";
+import { CommandTemplate } from "handlers";
 
 const durations = [
     {name: 'Don\' Delete Any', value: 0},

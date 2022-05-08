@@ -1,4 +1,4 @@
-import { EventTemplate } from "../handlers";
+import { EventTemplate } from "handlers";
 
 export default {
     run: (client) => {

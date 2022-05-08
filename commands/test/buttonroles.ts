@@ -1,5 +1,5 @@
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { CommandTemplate } from "../../handlers";
+import { CommandTemplate } from "handlers";
 
 export default {
     types: ['LEGACY', 'SLASH'],

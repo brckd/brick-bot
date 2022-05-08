@@ -1,5 +1,5 @@
 import { getFiles } from './functions'
-import { Client, ButtonTemplate } from '.'
+import { Client, ButtonTemplate } from 'handlers'
 import path from 'path'
 
 export default (client: Client) => {

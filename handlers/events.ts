@@ -1,4 +1,4 @@
-import { Client, EventTemplate } from ".";
+import { Client, EventTemplate } from "handlers";
 import { getFiles } from "./functions";
 import path from 'path'
 

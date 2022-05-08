@@ -1,4 +1,4 @@
-import { CommandTemplate } from "../../handlers"
+import { CommandTemplate } from "handlers"
 
 const replacements = {
     'r': 'w',

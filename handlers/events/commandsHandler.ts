@@ -1,5 +1,5 @@
 import { Message, Permissions } from "discord.js"
-import { EventTemplate } from ".."
+import { EventTemplate } from "handlers"
 
 export default {
     name: 'messageCreate',

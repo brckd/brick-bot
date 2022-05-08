@@ -1,4 +1,4 @@
-import { AutocompleteInteraction, ButtonInteraction, CommandInteraction, GuildMember, Interaction, MessageContextMenuInteraction, Permissions, UserContextMenuInteraction } from "discord.js";
+import { ButtonInteraction, CommandInteraction, GuildMember, Interaction, MessageContextMenuInteraction, Permissions, UserContextMenuInteraction } from "discord.js";
 import { EventTemplate, Client } from "..";
 
 export default {
@@ -13,10 +13,6 @@ export default {
         if (
             interaction.isButton()
         ) return handleButton(client, interaction)
-
-        if(
-            interaction.isAutocomplete()
-        ) return handleAutocomplete(client, interaction)
     }
 } as EventTemplate
 
@@ -104,10 +100,4 @@ const handleButton = (client: Client, interaction: ButtonInteraction) => {
 
     if (!button) return
     button.run({ client, interaction }, ...params)
-}
-
-const handleAutocomplete = (client: Client, interaction: AutocompleteInteraction) => {
-    const command = client.commands.get(interaction.commandName)
-
-    interaction.options.getFocused()
 }

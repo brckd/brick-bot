@@ -1,4 +1,4 @@
-import Discord, { ApplicationCommandOptionData, ButtonInteraction, Collection, CommandInteraction, DMChannel, Guild, GuildMember, Interaction, InteractionReplyOptions, Message, MessageContextMenuInteraction, MessageInteraction, MessagePayload, NewsChannel, PartialDMChannel, PermissionResolvable, ReplyMessageOptions, TextBasedChannel, TextChannel, ThreadChannel, User, UserContextMenuInteraction } from 'discord.js'
+import Discord, { ApplicationCommandOptionData, ButtonInteraction, Collection, ColorResolvable, CommandInteraction, DMChannel, Guild, GuildMember, Interaction, InteractionReplyOptions, Message, MessageContextMenuInteraction, MessageEmbedOptions, MessageInteraction, MessageOptions, MessagePayload, NewsChannel, PartialDMChannel, PermissionResolvable, ReplyMessageOptions, TextBasedChannel, TextChannel, ThreadChannel, User, UserContextMenuInteraction } from 'discord.js'
 import { APIMessage } from 'discord-api-types/v9'
 import eventHandler from './events'
 import commandHandler from './commands'
@@ -11,6 +11,13 @@ export interface EventTemplate {
     },
     name?: string
 }
+
+export interface CommandEmbedOptions extends Omit<MessageEmbedOptions, 'author' | 'color' | 'title' | 'url'>, Omit<MessageOptions, 'embed'> {}
+export function isCommandEmbedOptions(object: any): object is CommandEmbedOptions {
+    return typeof(object) !== 'string' && 'description' in object
+}
+
+type CommandMessage = string | CommandEmbedOptions | MessagePayload | ReplyMessageOptions | InteractionReplyOptions
 
 export interface CommandTemplate {
     types: ('LEGACY' | 'SLASH' | 'USER' | 'MESSAGE')[]
@@ -41,8 +48,8 @@ export interface CommandTemplate {
             channelId: string,
             guild: Guild | null,
             guildId?: string | null,
-            reply: (options: string | MessagePayload | ReplyMessageOptions | InteractionReplyOptions) => Promise<Message | APIMessage | void>
-            fetchedReply: (options: string | MessagePayload | ReplyMessageOptions | InteractionReplyOptions) => Promise<Message | APIMessage>
+            reply: (options: CommandMessage) => Promise<Message | APIMessage | void>
+            fetchedReply: (options: CommandMessage) => Promise<Message | APIMessage>
         }, ...args: any[]): void
     }
 }
@@ -63,6 +70,7 @@ export interface ButtonTemplate {
 
 interface ClientOptions extends Discord.ClientOptions {
     prefix?: string | RegExp | (string | RegExp)[]
+    color?: ColorResolvable
     owners?: string[]
     testGuilds?: string[]
 
@@ -73,6 +81,7 @@ interface ClientOptions extends Discord.ClientOptions {
 
 export interface Client extends Discord.Client {
     prefix: (string | RegExp)[]
+    color?: ColorResolvable
     owners: string[]
     testGuilds?: string[]
 
@@ -95,6 +104,7 @@ export class Client extends Discord.Client {
         super(options)
 
         this.prefix = options.prefix instanceof Array ? options.prefix ?? ['!'] : [options.prefix ?? '!']
+        this.color = options.color
             
         this.owners = options.owners ?? []
         this.testGuilds = options.testGuilds

@@ -1,5 +1,5 @@
-import { Message, Permissions } from "discord.js"
-import { EventTemplate } from "handlers"
+import { Message, MessageEmbedOptions, MessageOptions, Permissions, ReplyMessageOptions } from "discord.js"
+import { EventTemplate, isCommandEmbedOptions } from ".."
 
 export default {
     name: 'messageCreate',
@@ -35,7 +35,21 @@ export default {
 
         try {
             const reply = async (options: any) => {
-                if (hasOwnProperty(options, 'ephemeral') && hasOwnProperty(options, 'content') && options.ephemeral===true) {
+                if (isCommandEmbedOptions(options)) {
+                    options = {
+                        embeds: [{
+                            author: {
+                                name: command?.name.replace(/\b[a-z]/g, c=>c.toUpperCase()),
+                                icon_url: client.user?.avatarURL(),
+                            },
+                            color: client.color,
+                            ...options
+                        } as MessageEmbedOptions],
+                        ...options
+                    } as MessageOptions
+                }
+                
+                if (hasOwnProperty(options, 'ephemeral') && options.ephemeral===true) {
                     let sent
                     try {
                         sent = await message.author.send(options)

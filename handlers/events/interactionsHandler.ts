@@ -1,5 +1,5 @@
-import { ButtonInteraction, CommandInteraction, GuildMember, Interaction, MessageContextMenuInteraction, Permissions, UserContextMenuInteraction } from "discord.js";
-import { EventTemplate, Client } from "handlers";
+import { ButtonInteraction, CommandInteraction, GuildMember, Interaction, MessageContextMenuInteraction, MessageEmbedOptions, MessageOptions, Permissions, ReplyMessageOptions, UserContextMenuInteraction } from "discord.js";
+import { EventTemplate, Client, isCommandEmbedOptions } from "..";
 
 export default {
     name: 'interactionCreate',
@@ -66,6 +66,20 @@ const handleApplicationCommand = (client: Client, interaction: CommandInteractio
             guild: interaction.guild,
             guildId: interaction.guildId,
             reply: async (options: any) => {
+                if (isCommandEmbedOptions(options)) {
+                    options = {
+                        embeds: [{
+                            author: {
+                                name: command?.name.replace(/\b[a-z]/g, c=>c.toUpperCase()),
+                                icon_url: client.user?.avatarURL(),
+                            },
+                            color: client.color,
+                            ...options
+                        } as MessageEmbedOptions],
+                        ...options
+                    } as MessageOptions
+                }
+
                 if (!interaction.replied) {
                     await interaction.reply(options)
                 } else {

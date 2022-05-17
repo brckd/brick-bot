@@ -17,6 +17,7 @@ const client = new Client({
     allowedMentions: {users: [], roles: [], repliedUser: false},
     
     prefix: '!',
+    color: 'BLURPLE',
     owners: ['691572882148425809'],
     testGuilds: ['968171159776559174']
 })

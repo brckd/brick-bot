@@ -6,14 +6,19 @@ export default {
     
     run: async ({ client, msgInter, reply }) => {
         if (
-            msgInter!.targetMessage.author === client.user
+            msgInter!.targetMessage.author.id === client.user?.id // is command
             && msgInter!.targetMessage instanceof Message
-            && msgInter!.targetMessage.reference?.messageId
-            && await (
-                await msgInter!.targetMessage.channel.messages.fetch(msgInter!.targetMessage.reference.messageId)
-            ).author === msgInter?.user
+            && (
+                msgInter!.targetMessage.interaction?.user === msgInter?.user // interaction commands
+                || ( // legacy commands
+                    msgInter!.targetMessage.reference?.messageId
+                    && await (
+                        await msgInter!.targetMessage.channel.messages.fetch(msgInter!.targetMessage.reference.messageId)
+                    ).author === msgInter?.user
+                )
+            )
         ) {
-            msgInter.targetMessage.delete()
+            msgInter!.targetMessage.delete()
             reply({
                 description: 'Message has been deleted',
                 ephemeral: true
@@ -24,6 +29,5 @@ export default {
                 ephemeral: true
             })
         }
-            
     }
 } as CommandTemplate

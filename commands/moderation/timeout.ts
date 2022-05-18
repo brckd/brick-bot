@@ -38,8 +38,8 @@ export default {
         }
     ],
 
-    run: ({ cmdInter }, member: GuildMember, duration: number, reason?: string) => {
+    run: ({ reply }, member: GuildMember, duration: number, reason?: string) => {
         member.timeout(duration, reason)
-        cmdInter!.reply(`${member.user.tag} has been timed out for ${durations.find(d=>duration===d.value)?.name}${reason?'for reason:\n> '+reason:''}`)
+        reply({description: `${member.user.tag} has been timed out for ${durations.find(d=>duration===d.value)?.name}${reason?'for reason:\n> '+reason:''}`})
     }
 } as CommandTemplate

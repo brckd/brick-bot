@@ -5,6 +5,8 @@ export default {
     description: 'Replies with the bot\'s uptime',
     
     run: ({ client, reply }) => {
-        reply(`Online <t:${Math.round(client.readyTimestamp!/1000)}:R>`)
+        reply({
+            description: `Online <t:${Math.round(client.readyTimestamp!/1000)}:R>`
+        })
     }
 } as CommandTemplate

@@ -35,9 +35,9 @@ export default {
         }
     ],
 
-    run: ({ cmdInter }, member: GuildMember, delete_messages: Number, reason?: string) => {
+    run: ({ cmdInter, reply }, member: GuildMember, delete_messages: Number, reason?: string) => {
         if (!member) 
-            return cmdInter!.reply('Invalid user')
+            return reply({description: 'Invalid user'})
 
         const user = member.user
 
@@ -46,7 +46,7 @@ export default {
             {days: 7, reason: reason}
         )
 
-        cmdInter!.reply(`${user.tag} has been banned ${reason?'for reason:\n> '+reason:''}
-        ${delete_messages>0 ? durations.find(d=>delete_messages===d.value)?.name + ' of message history have been deleted' : ''}`)
+        reply({description: `${user.tag} has been banned ${reason?'for reason:\n> '+reason:''}
+        ${delete_messages>0 ? durations.find(d=>delete_messages===d.value)?.name + ' of message history have been deleted' : ''}`})
     }
 } as CommandTemplate

@@ -5,6 +5,8 @@ export default {
     description: 'Replies with 🏓 *Ping!* and the bot latency',
     
     run: ({ client, reply }) => {
-        reply(`> 🏓 *Pong!*\nBot Latency: **${Math.round(client.ws.ping)}**ms`)
+        reply({
+            description: `> 🏓 *Pong!*\nBot Latency: **${Math.round(client.ws.ping)}**ms`
+        })
     }
 } as CommandTemplate

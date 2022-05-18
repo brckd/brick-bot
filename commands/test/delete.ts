@@ -4,7 +4,7 @@ import { CommandTemplate } from "handlers";
 export default {
     types: ['MESSAGE'],
     
-    run: async ({ client, msgInter }) => {
+    run: async ({ client, msgInter, reply }) => {
         if (
             msgInter!.targetMessage.author === client.user
             && msgInter!.targetMessage instanceof Message
@@ -14,13 +14,13 @@ export default {
             ).author === msgInter?.user
         ) {
             msgInter.targetMessage.delete()
-            msgInter!.reply({
-                content: 'Message has been deleted',
+            reply({
+                description: 'Message has been deleted',
                 ephemeral: true
             })
         } else {
-            msgInter!.reply({
-                content: 'You cannot delete this Message',
+            reply({
+                description: 'You cannot delete this Message',
                 ephemeral: true
             })
         }

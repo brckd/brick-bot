@@ -31,8 +31,8 @@ export default {
         }
     ],
 
-    run: ({ cmdInter }, member: GuildMember, reason?: string) => {
+    run: ({ reply }, member: GuildMember, reason?: string) => {
         member.kick(reason)
-        cmdInter!.reply(`${member.user.tag} has been kicked ${reason?'for reason:\n> '+reason:''}`)
+        reply({description: `${member.user.tag} has been kicked ${reason?'for reason:\n> '+reason:''}`})
     }
 } as CommandTemplate

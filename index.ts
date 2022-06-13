@@ -1,5 +1,4 @@
 import { Client } from './brickord'
-import Discord from 'discord.js'
 import 'dotenv/config'
 
 const client = new Client({

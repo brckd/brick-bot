@@ -1,19 +1,8 @@
-import { EventTemplate } from "handlers";
+import { EventData } from '../brickord'
 
 export default {
+    name: 'ready',
     run: (client) => {
-        console.log(`Logged in as ${client.user?.tag}`)
-        client.prefix.push(client.user!.toString())
-
-        client.user?.setPresence({activities: [{
-            type: 'PLAYING',
-            name: 'Connecting'
-        }]})
-        setTimeout(() => {
-            client.user?.setPresence({activities: [{
-                type: 'LISTENING',
-                name: '!help'
-            }]})
-        }, 1000 * 5)
+        console.log(`Logged in as ${client.user?.tag}!`)
     }
-} as EventTemplate
+} as EventData<'ready'>

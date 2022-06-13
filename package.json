@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/builders": "^0.13.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0"
   }

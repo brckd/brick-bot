@@ -1,7 +1,7 @@
 import { type EventData } from '..'
 
 export default {
-    run: (client, interaction, err) => {
+    run: ({}, interaction, err) => {
         if (err instanceof Error)
             interaction.reply({
                 content: err.toString(),

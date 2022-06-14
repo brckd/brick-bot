@@ -1,4 +1,4 @@
-import { Client, type SlashCommandData, type SlashCommand } from '..'
+import { Client, type ChatCommandData, type SlashCommand } from '..'
 import { getFiles } from '../utils'
 import path from 'path'
 
@@ -6,7 +6,7 @@ export function loadCommands(client: Client, dir?: string) {
     getFiles(dir ?? client.commandsDir).forEach( file => {
         delete require.cache[require.resolve(file)]
         
-        const cmds = require(file) as { [key: string]: SlashCommandData }
+        const cmds = require(file) as { [key: string]: ChatCommandData }
         for (const c in cmds) {
             const name = cmds[c].data.name
                 ?? c === 'default'

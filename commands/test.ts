@@ -1,6 +1,6 @@
 import Discord from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { SlashCommandData } from '../brickord'
+import { ChatCommandData } from '../brickord'
 
 export const echo = {
     data: new SlashCommandBuilder()
@@ -19,7 +19,7 @@ export const echo = {
                 ephemeral: true
             })
     }
-} as SlashCommandData
+} as ChatCommandData
 
 export const mention = {
     data: new SlashCommandBuilder()
@@ -32,7 +32,7 @@ export const mention = {
     run: (interaction, mention: Discord.User) => {
         interaction.reply(mention.toString())
     }
-} as SlashCommandData
+} as ChatCommandData
 
 export const channel = {
     data: new SlashCommandBuilder()
@@ -45,4 +45,4 @@ export const channel = {
     run: (interaction, channel: Discord.Channel) => {
         interaction.reply(channel.toString())
     }
-} as SlashCommandData
+} as ChatCommandData

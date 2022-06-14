@@ -4,14 +4,14 @@ import path from 'path'
 import { loadCommands } from './loaders/commands'
 import { loadEvents } from './loaders/events'
 
-export interface SlashCommandData {
+export interface ChatCommandData {
     data: Builders.SlashCommandBuilder
     run: (interaction: Discord.CommandInteraction | Discord.Message, ...args: any[]) => Awaitable<void>
 }
 
 export interface SlashCommand {
     data: ReturnType<typeof Builders.SlashCommandBuilder.prototype.toJSON>
-    run: SlashCommandData['run']
+    run: ChatCommandData['run']
 }
 
 export interface ClientEvents extends Discord.ClientEvents {

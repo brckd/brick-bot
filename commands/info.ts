@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { SlashCommandData } from '../brickord'
+import { ChatCommandData } from '../brickord'
 
 export const ping = {
     data: new SlashCommandBuilder()
@@ -7,4 +7,4 @@ export const ping = {
     run: (interaction) => {
         interaction.reply(`> 🏓 *Pong!*\nBot Latency: **${Math.round(interaction.client.ws.ping)}**ms`)
     }
-} as SlashCommandData
+} as ChatCommandData

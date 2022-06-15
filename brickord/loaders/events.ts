@@ -11,7 +11,7 @@ export function loadEvents(client: Client, dir?: string) {
         const filename = path.basename(file).slice(0, -3)
         const name = (event.name ?? filename) as keyof Discord.ClientEvents
         
-        if (!client.events.has(name))
+        if (!client.events.has(filename))
             client.on(name, (...args) => client.events.get(filename)?.run(client, ...args))
 
         client.events.set(filename, event)

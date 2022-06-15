@@ -9,7 +9,7 @@ export interface ChatCommandData {
     run: (interaction: Discord.CommandInteraction | Discord.Message, ...args: any[]) => Awaitable<void>
 }
 
-export interface SlashCommand {
+export interface ChatCommand {
     data: ReturnType<typeof Builders.SlashCommandBuilder.prototype.toJSON>
     run: ChatCommandData['run']
 }
@@ -47,7 +47,7 @@ export interface Client extends Discord.Client {
     loadEvents: (dir?: string) => void
 
     commandsDir: string
-    commands: Discord.Collection<string, SlashCommand>
+    commands: Discord.Collection<string, ChatCommand>
     loadCommands: (dir?: string) => void
     
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean

@@ -1,4 +1,4 @@
-import { Client, type ChatCommandData, type SlashCommand } from '..'
+import { Client, type ChatCommandData, type ChatCommand } from '..'
 import { getFiles } from '../utils'
 import path from 'path'
 
@@ -13,7 +13,7 @@ export function loadCommands(client: Client, dir?: string) {
                 ? path.basename(file).slice(0, -3)
                 : c
             
-            const cmd = Object.assign(cmds[c], { data: cmds[c].data.setName(name).toJSON() }) as SlashCommand
+            const cmd = Object.assign(cmds[c], { data: cmds[c].data.setName(name).toJSON() }) as ChatCommand
 
             client.commands.set(
                 name,

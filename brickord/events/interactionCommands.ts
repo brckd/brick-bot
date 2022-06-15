@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-import { EventData, Client, SlashCommand } from "..";
+import { EventData, Client, ChatCommand } from "..";
 
 export default {
     name: 'interactionCreate',

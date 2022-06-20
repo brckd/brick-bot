@@ -1,5 +1,6 @@
 .env
 package-lock.json
 node_modules/
-commands/test/test.ts
-Brick.code-workspace
+.npm/
+**/test.js
+**/test

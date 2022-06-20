@@ -1,6 +1,10 @@
 .env
+.gitconfig
+
+
 package-lock.json
 node_modules/
 .npm/
+
 **/test.js
 **/test

@@ -4,7 +4,11 @@ export default {
     run: ({}, interaction, err) => {
         if (err instanceof Error)
             interaction.reply({
-                content: err.toString(),
+                embeds: [{
+                    title: err.name,
+                    description: err.message,
+                    color: 'RED'
+                }],
                 ephemeral: true
             })
         else 

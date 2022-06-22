@@ -2,7 +2,7 @@ import Discord from 'discord.js'
 import Builders from '@discordjs/builders'
 
 export interface ChatCommandData {
-    data: Builders.SlashCommandBuilder
+    data: Omit<Builders.SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
     run: (interaction: Discord.CommandInteraction | Discord.Message, ...args: any[]) => Discord.Awaitable<void>
 }
 

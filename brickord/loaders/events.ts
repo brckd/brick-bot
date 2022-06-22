@@ -1,5 +1,4 @@
-import { Client, type EventData } from '..'
-import { getFiles } from '../utils'
+import { Client, type EventData, getFiles } from '..'
 import Discord from 'discord.js'
 import path from 'path'
 

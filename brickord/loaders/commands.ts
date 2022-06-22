@@ -1,5 +1,4 @@
-import { Client, type ChatCommandData, type ChatCommand } from '..'
-import { getFiles } from '../utils'
+import { Client, type ChatCommandData, type ChatCommand, getFiles } from '..'
 import path from 'path'
 
 export function loadCommands(client: Client, dir?: string) {

@@ -5,4 +5,15 @@ export function getFiles(dir: string, ext: RegExp = /(.js|.ts)$/) {
     return fs.readdirSync(dir).filter(file => ext.test(file)).map(f => path.join(dir, f))
 }
 
+
+export function getAllFiles(dir: string) {
+    const files = getFiles(dir)
+    fs.readdirSync(dir, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .forEach((dirent) => {
+        files.concat(getAllFiles(path.join(dir, dirent.name)))
+    })
+    return files
+}
+
 export const mainRoot = path.dirname(require.main!.filename)

@@ -11,7 +11,7 @@ export function getAllFiles(dir: string) {
     fs.readdirSync(dir, { withFileTypes: true })
         .filter(dirent => dirent.isDirectory())
         .forEach((dirent) => {
-        files.concat(getAllFiles(path.join(dir, dirent.name)))
+        files.push(...getAllFiles(path.join(dir, dirent.name)))
     })
     return files
 }

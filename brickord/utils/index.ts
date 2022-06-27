@@ -17,3 +17,5 @@ export function getAllFiles(dir: string) {
 }
 
 export const mainRoot = path.dirname(require.main!.filename)
+
+export * from './converters'

@@ -1,7 +1,4 @@
-import Discord from 'discord.js'
-import { EventData } from '..'
-
-const optionTypes = [undefined, 'subcommand', 'subcommand group', 'string', 'integer', 'boolean', 'member', 'channel', 'role', 'mentionable', 'number', 'attachment']
+import { EventData, CommandNotFound, commandOptions, CommandError, AttachmentNotFound, getBoolean, getMember, getChannel, getRole, getMentionable, getInt, getNumber } from '..'
 
 export default {
     name: 'messageCreate',
@@ -24,7 +21,7 @@ export default {
         const attachments = message.attachments.toJSON()
         
         try {
-            if (!command) throw new Error(`Command not found: ${name}`)
+            if (!command) throw new CommandNotFound(name)
 
             if (!command.data.options) return command.run(message)
 
@@ -33,18 +30,21 @@ export default {
                 const arg = await (
                     async () => {switch (option.type) {
                         case 3: return query
-                        case 4: return parseInt(query)
+                        case 4: return getInt(query)
                         case 5: return getBoolean(query)
                         case 6: return await getMember(message, query)
                         case 7: return getChannel(message, query)
                         case 8: return getRole(message, query)
-                        case 9: return getRole(message, query) ?? await getMember(message, query)
-                        case 10: return parseFloat(query)
-                        case 11: return attachments.shift()
+                        case 9: return getMentionable(message, query)
+                        case 10: return getNumber(query)
+                        case 11: 
+                            const result = attachments.shift()
+                            if (!result) throw new AttachmentNotFound()
+                            return result
                     }
                 })()
                 if (arg === undefined || arg === null) {
-                    throw new Error(`Couldn't convert \`${query}\` to ${optionTypes[option.type]}`)
+                    throw new Error(`Couldn't convert \`${query}\` to ${commandOptions[option.type-1]}`)
                 }
                 return arg
             }))
@@ -52,30 +52,10 @@ export default {
             command.run(message, ...args)
         }
         catch (err) {
-            if(err instanceof Error)
+            if(err instanceof CommandError)
                 client.emit('commandError', message, err)
             else
                 console.error(err)
         }
     }
 } as EventData<'messageCreate'>
-
-export function getBoolean(query: string) {
-    return ['true', 'yes'].includes(query.toLowerCase())
-        ? true
-        : ['false', 'no'].includes(query.toLowerCase())
-        ? false
-        : undefined
-}
-export async function getMember(message: Discord.Message, query: string) {
-    return message.guild?.members.cache.get(query.replace( /\D+/g, ''))
-        ?? (await message.guild?.members.search({ query: query, limit: 1 }))?.first()
-}
-export function getChannel(message: Discord.Message, query: string) {
-    return message.guild?.channels.cache.get(query.replace( /\D+/g, ''))
-        ?? message.guild?.channels.cache.find(c => c.name === query.replace( /[^A-Za-z0-9-]+/g, '').toLowerCase())
-}
-export function getRole(message: Discord.Message, query: string) {
-    return message.guild?.roles.cache.get(query.replace( /\D+/g, ''))
-        ?? message.guild?.roles.cache.find(r => r.name.toLowerCase() === query.replace( /[^A-Za-z0-9]+/g, '').toLowerCase())
-}

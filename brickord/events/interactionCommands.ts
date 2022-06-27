@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-import { EventData, CommandArg } from "..";
+import { EventData, CommandOption, CommandNotFound, CommandError } from "..";
 
 export default {
     name: 'interactionCreate',
@@ -11,9 +11,9 @@ export default {
         const command = client.commands.get(interaction.commandName)
 
         try {
-            if (!command) throw new Error(`Command not found: ${name}`)
+            if (!command) throw new CommandNotFound(interaction.commandName)
 
-            let args: CommandArg[] = []
+            let args: CommandOption[] = []
             if (command.data.options) {
                 const options = interaction.options
                 args = command.data.options.map( option => {
@@ -30,13 +30,13 @@ export default {
                         case 10: return options.getNumber(option.name, option.required)
                         case 11: return options.getAttachment(option.name, option.required)
                     }
-                }) as CommandArg[]
+                }) as CommandOption[]
             }
 
             const reply = command.run(interaction, ...args)
         }
         catch (err) {
-            if(err instanceof Error)
+            if(err instanceof CommandError)
                 client.emit('commandError', interaction, err)
             else
                 console.error(err)

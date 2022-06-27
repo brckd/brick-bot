@@ -1,6 +1,5 @@
 import { Client, type ChatCommandData, type ChatCommand, getAllFiles } from '..'
 import path from 'path'
-import fs from 'fs'
 
 export function loadCommands(client: Client, dir?: string) {
     getAllFiles(dir ?? client.commandsDir).forEach( file => {

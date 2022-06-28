@@ -1,6 +1,9 @@
-import { EventData } from '../brickord'
+import { EventData, mainRoot } from '../brickord'
 import { TextChannel, MessageEmbedOptions, Message } from 'discord.js'
 import { replace } from '../utils'
+import path from 'path'
+import dotenv from 'dotenv'
+dotenv.config({path: path.join(mainRoot, '.env')})
 
 export default {
     name: 'messageCreate',
@@ -42,12 +45,11 @@ export default {
         // reply embed
         let embeds = message.embeds as MessageEmbedOptions[]
         if (reply) {
-            console.log(reply.attachments.first())
             embeds.push({
                 description: reply.content,
                 author: {
                     name: reply.author.username,
-                    iconURL: (await client.users.fetch(reply.author, {force: true})).avatarURL() ?? undefined,
+                    iconURL: reply.author.avatarURL() ?? undefined,
                     url: reply.url
                 },
                 color: "DARKER_GREY",
@@ -57,15 +59,14 @@ export default {
             })
         }
 
-        const name = 'Brickhook'
         const webhook =
-            (await message.channel?.fetchWebhooks())?.find(w => w.name === name)
-            ?? (await message.channel.createWebhook(name))
+            (await message.channel?.fetchWebhooks())?.find(w => w.name === process.env.WEBHOOK_NAME)
+            ?? (await message.channel.createWebhook(process.env.WEBHOOK_NAME!))
         
         webhook.send({
             username: message.author.username,
             avatarURL: message.author.avatarURL()!,
-            content: content,
+            content: content || '_ _',
             attachments: message.attachments.toJSON(),
             embeds: message.embeds
         })

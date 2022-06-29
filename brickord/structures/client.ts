@@ -1,10 +1,11 @@
-import Discord, { Awaitable } from 'discord.js'
+import Discord from 'discord.js'
 import { loadCommands, loadEvents, EventData, ChatCommand, mainRoot, libRoot } from '..'
 import path from 'path'
 
-
-export interface ClientEvents extends Discord.ClientEvents {
-    commandError: [interaction: Discord.Message | Discord.CommandInteraction | Discord.UserContextMenuInteraction | Discord.MessageContextMenuInteraction, err: Error]
+declare module 'discord.js' {
+    interface ClientEvents {
+        commandError: [interaction: Discord.Message | Discord.CommandInteraction | Discord.UserContextMenuInteraction | Discord.MessageContextMenuInteraction, err: Error]
+    }
 }
 
 export interface ClientOptions extends Discord.ClientOptions {
@@ -31,12 +32,6 @@ export interface Client extends Discord.Client {
     commandsDir: string
     commands: Discord.Collection<string, ChatCommand>
     loadCommands: (dir?: string) => void
-    
-    emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean
-    emit<S extends string | symbol>(event: Exclude<S, keyof ClientEvents>, ...args: unknown[]): boolean
-
-    on<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => Awaitable<void>): this
-    on<S extends string | symbol>(event: Exclude<S, keyof ClientEvents>, listener: (...args: any[]) => Awaitable<void>): this
 }
 
 export class Client extends Discord.Client {
@@ -59,5 +54,6 @@ export class Client extends Discord.Client {
         this.commands = new Discord.Collection()
         this.loadCommands = (dir) => loadCommands(this, dir)
         this.loadCommands()
+        this.loadCommands(path.join(libRoot, 'commands'))
     }
 }

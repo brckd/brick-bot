@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { ChatCommandData } from '../brickord'
 
-export const ping = {
+export default {
     data: new SlashCommandBuilder()
         .setDescription('Sends the bot latency'),
     run: (interaction) => {

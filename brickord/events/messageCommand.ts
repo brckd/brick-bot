@@ -27,6 +27,7 @@ export default {
 
             const args = await Promise.all(command.data.options.map(async (option, i) => {
                 const query: string = options[i]
+                if (!query && !option.required) return
                 const arg = await (
                     async () => {switch (option.type) {
                         case 3: return query

@@ -3,7 +3,7 @@ import Builders from '@discordjs/builders'
 
 export const commandOptions = ['Subcommand', 'Subcommand Group', 'String', 'Integer', 'Boolean', 'Member', 'Channel', 'Role', 'Mentionable', 'Number', 'Attachment'] as const
 
-export type CommandOption = string | number | boolean | Discord.User | Discord.GuildMember | Discord.Channel | Discord.Role | Discord.MessageAttachment
+export type CommandOption = string | number | boolean | Discord.User | Discord.GuildMember | Discord.Channel | Discord.Role | Discord.MessageAttachment | undefined
 
 export interface ChatCommandData {
     data: Omit<Builders.SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>

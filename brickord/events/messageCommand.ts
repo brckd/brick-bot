@@ -1,4 +1,4 @@
-import { EventData, CommandNotFound, commandOptions, CommandError, AttachmentNotFound, getBoolean, getMember, getChannel, getRole, getMentionable, getInt, getNumber } from '..'
+import { EventData, CommandNotFound, commandOptions, CommandError, TooManyArguments, AttachmentNotFound, getBoolean, getMember, getChannel, getRole, getMentionable, getInt, getNumber } from '..'
 
 export default {
     name: 'messageCreate',
@@ -23,8 +23,12 @@ export default {
         try {
             if (!command) throw new CommandNotFound(name)
 
-            if (!command.data.options) return command.run(message)
-
+            if (!command.data.options)
+                command.data.options = []
+                
+            if (options.length > command.data.options.length)
+                throw new TooManyArguments(command.data.options.length, options.length)
+                
             const args = await Promise.all(command.data.options.map(async (option, i) => {
                 const query: string = options[i]
                 if (!query && !option.required) return
@@ -45,7 +49,7 @@ export default {
                     }
                 })()
                 if (arg === undefined || arg === null) {
-                    throw new Error(`Couldn't convert \`${query}\` to ${commandOptions[option.type-1]}`)
+                    throw new CommandError(`Couldn't convert \`${query}\` to ${commandOptions[option.type-1]}`)
                 }
                 return arg
             }))

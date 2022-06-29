@@ -16,7 +16,7 @@ const client = new Brickord.Client({
     ],
 
     allowedMentions: {users: [], roles: [], repliedUser: false},
-    prefix: process.env.PREFIX
+    prefix: '!'
 })
 
 client.login(process.env.TOKEN)

@@ -6,6 +6,21 @@ declare module 'discord.js' {
     interface ClientEvents {
         commandError: [interaction: Discord.Message | Discord.CommandInteraction | Discord.UserContextMenuInteraction | Discord.MessageContextMenuInteraction, err: Error]
     }
+    
+    interface Client {
+        prefix: (string | RegExp)[]
+        color?: Discord.ColorResolvable
+        owners: string[]
+        testGuilds?: string[]
+    
+        eventsDir: string
+        events: Discord.Collection<string, EventData<keyof Discord.ClientEvents>>
+        loadEvents: (dir?: string) => void
+    
+        commandsDir: string
+        commands: Discord.Collection<string, ChatCommand>
+        loadCommands: (dir?: string) => void
+    }
 }
 
 export interface ClientOptions extends Discord.ClientOptions {
@@ -19,20 +34,6 @@ export interface ClientOptions extends Discord.ClientOptions {
     buttonsDir?: string
 }
 
-export interface Client extends Discord.Client {
-    prefix: (string | RegExp)[]
-    color?: Discord.ColorResolvable
-    owners: string[]
-    testGuilds?: string[]
-
-    eventsDir: string
-    events: Discord.Collection<string, EventData<keyof Discord.ClientEvents>>
-    loadEvents: (dir?: string) => void
-
-    commandsDir: string
-    commands: Discord.Collection<string, ChatCommand>
-    loadCommands: (dir?: string) => void
-}
 
 export class Client extends Discord.Client {
     constructor(options: ClientOptions) {

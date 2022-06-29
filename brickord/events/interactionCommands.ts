@@ -32,8 +32,7 @@ export default {
                     }
                 }) as CommandOption[]
             }
-
-            const reply = command.run(interaction, ...args)
+            command.run(interaction, ...args)
         }
         catch (err) {
             if(err instanceof CommandError)

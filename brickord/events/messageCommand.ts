@@ -7,10 +7,10 @@ export default {
         
         let prefix = client.prefix.find((prefix) =>
             typeof(prefix) === 'string'
-            ? message.content.startsWith(prefix)
-            : message.content.search(prefix)
+            ? message.content.toLowerCase().startsWith(prefix)
+            : prefix.test(message.content)
         )
-        
+
         if (!prefix) return
         
         const options = message.content.replace(prefix, '').trim().split(/ +/g)

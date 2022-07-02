@@ -1,4 +1,4 @@
-import { EventData, CommandNotFound, commandOptions, CommandError, TooManyArguments, AttachmentNotFound, getBoolean, getMember, getChannel, getRole, getMentionable, getInt, getNumber } from '..'
+import { EventData, CommandNotFound, commandOptions, CommandError, TooManyArguments, AttachmentNotFound, getBoolean, getMember, getChannel, getRole, getMentionable, getInt, getNumber, MissingRequiredArgument } from '..'
 
 export default {
     name: 'messageCreate',
@@ -31,7 +31,11 @@ export default {
                 
             const args = await Promise.all(command.data.options.map(async (option, i) => {
                 const query: string = options[i]
-                if (!query && !option.required) return
+                if (!query)
+                    if (option.required)
+                        throw new MissingRequiredArgument(option.name)
+                    else return
+                
                 const arg = await (
                     async () => {switch (option.type) {
                         case 3: return query
@@ -48,9 +52,6 @@ export default {
                             return result
                     }
                 })()
-                if (arg === undefined || arg === null) {
-                    throw new CommandError(`Couldn't convert \`${query}\` to ${commandOptions[option.type-1]}`)
-                }
                 return arg
             }))
 

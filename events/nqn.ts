@@ -1,6 +1,5 @@
 import { EventData, mainRoot } from '../brickord'
 import { TextChannel, MessageEmbedOptions, Message } from 'discord.js'
-import { replace } from '../utils'
 import path from 'path'
 import dotenv from 'dotenv'
 dotenv.config({path: path.join(mainRoot, '.env')})
@@ -15,7 +14,7 @@ export default {
         let content = message.content
 
         // incomplete links
-        content = replace(content, /(?:^| )[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*(?: |$)/gm, s => `[${s}](https://${s})`)
+        content = content.replace(/(?:^| )[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*(?: |$)/gm, s => `[${s}](https://${s})`)
 
         // global replies
         let reply: Message | undefined

@@ -1,4 +1,5 @@
 import { Client } from 'brickord.js'
+import Prefix from './schemas/prefix'
 import 'dotenv/config'
 
 const client = new Client({
@@ -16,7 +17,7 @@ const client = new Client({
     ],
 
     allowedMentions: {users: [], roles: [], repliedUser: false},
-    prefix: ['!', m => m.client.user?.toString()]
+    prefix: [async m=>(await Prefix.where('id').equals(m.guildId).select('prefix'))[0].prefix, m => m.client.user?.toString()]
 })
 
 client.login(process.env.TOKEN)

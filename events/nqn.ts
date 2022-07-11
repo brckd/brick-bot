@@ -15,6 +15,7 @@ export default {
 
         // incomplete links
         content = content.replace(/(?<![a-z./])[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*/gm, s => `[${s}](https://${s})`) // create hyperlinks
+        content = content.replace(/(?<=\[.*\]\()[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*(?=\))/gm, s => `https://${s}`) // replace existing hyperlinks
 
         // global replies
         let replies: Message[] = []

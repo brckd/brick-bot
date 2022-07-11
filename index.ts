@@ -16,7 +16,7 @@ const client = new Client({
     ],
 
     allowedMentions: {users: [], roles: [], repliedUser: false},
-    prefix: '!'
+    prefix: ['!', m => m.client.user?.toString()]
 })
 
 client.login(process.env.TOKEN)

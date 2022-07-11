@@ -1,5 +1,5 @@
 import { EventData, mainRoot } from 'brickord.js'
-import { TextChannel, MessageEmbedOptions, Message } from 'discord.js'
+import { MessageEmbedOptions, Message } from 'discord.js'
 import path from 'path'
 import dotenv from 'dotenv'
 dotenv.config({path: path.join(mainRoot, '.env')})
@@ -8,42 +8,49 @@ export default {
     name: 'messageCreate',
     run: async (client, message) => {
         if (message.author.bot) return
-        if (!(message.channel instanceof TextChannel)) return
+        if (!("fetchWebhooks" in message.channel)) return
         if (!message.deletable) return
 
         let content = message.content
 
         // incomplete links
-        content = content.replace(/(?:^| )[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*(?: |$)/gm, s => `[${s}](https://${s})`)
+        content = content.replace(/(?<![a-z./])[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*/gm, s => `[${s}](https://${s})`) // create hyperlinks
 
         // global replies
+        let replies: Message[] = []
         let reply: Message | undefined
 
-        const msgUrlRegExp = /https:\/\/discord\.com\/channels\/\d{17,19}\/\d{17,19}\/(\d{17,19})/
-        let replyUrl = content.match(msgUrlRegExp)
+        const msgUrlRegExp = / ?https:\/\/discord\.com\/channels\/\d{17,19}\/\d{17,19}\/(\d{17,19})/g
+        let replyUrls = content.match(msgUrlRegExp) ?? []
 
-        if (replyUrl) {
-            const ids = replyUrl[0].split('/')
+        for (const url of replyUrls) {
+            const ids = url.split('/')
             const channel = client.channels.cache.get(ids[5])
 
             if (channel?.isText()) {
                 reply = await channel.messages.fetch(ids[6])
                 if (reply)
-                    content = content.replace(msgUrlRegExp, '')
+                    replies.push(reply)
             }
         }
+        content = content.replace(msgUrlRegExp, '')
 
-        // check
-        if (content === message.content) return
+        // checks
+        let replace = false
+        if (content !== message.content) replace = true
+        if (/(?:^| )\[.*\]\(https?:\/\/[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]\)(?: |$)/.test(content)) replace = true // hyperlinks
+        
+        if (!replace) return
 
         // local replies
         if (message.reference?.messageId){
-            reply = message.channel.messages.cache.get(message.reference.messageId) ?? reply
+            reply = message.channel.messages.cache.get(message.reference.messageId)
+            if (reply) replies.push(reply)
         }
 
         // reply embed
         let embeds = message.embeds as MessageEmbedOptions[]
-        if (reply) {
+        for (reply of replies) {
             embeds.push({
                 description: reply.content,
                 author: {

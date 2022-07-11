@@ -1,4 +1,4 @@
-import { EventData, mainRoot } from '../brickord'
+import { EventData, mainRoot } from 'brickord.js'
 import { TextChannel } from 'discord.js'
 import path from 'path'
 import dotenv from 'dotenv'

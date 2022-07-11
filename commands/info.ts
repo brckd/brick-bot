@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, time } from '@discordjs/builders'
-import { ChatCommandData } from '../brickord'
+import { ChatCommandData } from 'brickord.js'
 
 export const ping = {
     data: new SlashCommandBuilder()

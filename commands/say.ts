@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { ChatCommandData } from '../brickord'
+import { ChatCommandData } from 'brickord.js'
 
 export default {
     data: new SlashCommandBuilder()

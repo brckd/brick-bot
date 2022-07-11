@@ -1,4 +1,4 @@
-import Brickord from './brickord'
+import Brickord from 'brickord.js'
 import 'dotenv/config'
 
 const client = new Brickord.Client({

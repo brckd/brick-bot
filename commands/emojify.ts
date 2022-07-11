@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { ChatCommandData } from '../brickord'
+import { ChatCommandData } from 'brickord.js'
 import { emojify } from '../events/emojify'
 
 export default {

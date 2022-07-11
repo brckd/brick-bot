@@ -1,4 +1,4 @@
-import { EventData } from '../brickord'
+import { EventData } from 'brickord.js'
 
 export default {
     run: (client) => {

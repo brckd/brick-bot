@@ -1,7 +1,7 @@
-import Brickord from 'brickord.js'
+import { Client } from 'brickord.js'
 import 'dotenv/config'
 
-const client = new Brickord.Client({
+const client = new Client({
     intents: [
         'GUILDS',
         'GUILD_MESSAGES',

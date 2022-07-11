@@ -11,9 +11,9 @@ export default {
         ),
     run: async (interaction, prefix?: string) => {
         if (prefix)
-            await Prefix.findOneAndUpdate({ id: interaction.guild?.id }, { prefix }, { upsert: true, new: true })
+            await Prefix.findOneAndUpdate({ id: interaction.guildId }, { prefix }, { upsert: true, new: true })
         
-        prefix = (await Prefix.where('id').equals(interaction.guild?.id).limit(1).select('prefix'))[0].prefix ?? interaction.client.prefix.join(', ')
+        prefix = (await Prefix.where('id').equals(interaction.guildId).select('prefix'))[0].prefix ?? interaction.client.prefix.join(', ')
         interaction.reply(`The current prefix is ${inlineCode(prefix)}`)
     }
 } as ChatCommandData

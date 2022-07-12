@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, inlineCode } from '@discordjs/builders'
+import { SlashCommandBuilder, bold } from '@discordjs/builders'
 import { ChatCommandData } from 'brickord.js'
 import Prefix from '../schemas/prefix'
 
@@ -13,7 +13,10 @@ export default {
         if (prefix)
             await Prefix.findOneAndUpdate({ id: interaction.guildId }, { prefix }, { upsert: true, new: true })
         
-        prefix = ((await Prefix.where('id').equals(interaction.guildId).select('prefix'))[0] || {prefix: interaction.client.prefix.join(', ')}).prefix!
-        interaction.reply(`The current prefix is ${inlineCode(prefix)}`)
+        const prefixes = (await (interaction.client.prefix.resolve(interaction))).map(p => bold(p.toString())).join(', ')
+        if (prefix)
+            interaction.reply(`The new prefixes are ${prefixes}`)
+        else
+            interaction.reply(`The current prefixes are ${prefixes}`)
     }
 } as ChatCommandData

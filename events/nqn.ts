@@ -14,8 +14,13 @@ export default {
         let content = message.content
 
         // incomplete links
-        content = content.replace(/(?<![a-z./])[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*/gm, s => `[${s}](https://${s})`) // create hyperlinks
-        content = content.replace(/(?<=\[.*\]\()[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]*(?=\))/gm, s => `https://${s}`) // replace existing hyperlinks
+
+        const domainChars = 'a-zA-Z0-9@%._\\\\+~#?&='
+        const urlChars = domainChars + ':/'
+        const url = `[${domainChars}]{2,256}\\.[${domainChars}]{2,6}/?[${urlChars}]*`
+        const hyperLink = ['\\[.*\\]\\(', '\\)']
+        content = content.replace(new RegExp(`(?<![${urlChars}]|${hyperLink[0]})${url}`, 'g'), s => `[${s}](https://${s})`) // create hyperlinks
+        content = content.replace(new RegExp(`(?<=${hyperLink[0]})${url}(?=${hyperLink[1]})`, 'g'), s => `https://${s}`) // replace existing hyperlinks
 
         // global replies
         let replies: Message[] = []
@@ -39,7 +44,7 @@ export default {
         // checks
         let replace = false
         if (content !== message.content) replace = true
-        if (/(?:^| )\[.*\]\(https?:\/\/[a-z.]+\.[a-z]+[a-zA-Z0-9/-_&=\?]\)(?: |$)/.test(content)) replace = true // hyperlinks
+        if (new RegExp(`${hyperLink[0]}https?://${url}${hyperLink[1]}`).test(content)) replace = true // hyperlinks
         
         if (!replace) return
 

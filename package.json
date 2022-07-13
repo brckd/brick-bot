@@ -1,7 +1,7 @@
 {
   "name": "brick",
   "version": "1.0.0",
-  "description": "Discord Bot made in Discord.JS",
+  "description": "Discord Bot made in Brickord.JS",
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon index.ts"

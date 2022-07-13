@@ -3,16 +3,23 @@
   "version": "1.0.0",
   "description": "Discord Bot made in Brickord.JS",
   "main": "index.ts",
-  "scripts": {
-    "dev": "nodemon index.ts"
-  },
   "keywords": [],
   "author": "Bricked",
   "license": "ISC",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Brycked/brick"
+  },
+  
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.0",
     "mongoose": "^6.4.4"
+  },
+  
+  "scripts": {
+    "dev": "nodemon index.ts"
   }
 }
